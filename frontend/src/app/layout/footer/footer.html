@@ -1,0 +1,43 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="footer__logo" href="/" aria-label="Praça, página inicial">
+          <span class="footer__mark"><app-icon name="store" [size]="20" /></span>
+          <span>Praça</span>
+        </a>
+        <p class="footer__about">
+          O marketplace onde você encontra produtos de todas as categorias, com vendedores
+          verificados e compra protegida.
+        </p>
+        <div class="payments">
+          <span>Pix</span>
+          <span>Visa</span>
+          <span>Master</span>
+          <span>Elo</span>
+          <span>Boleto</span>
+        </div>
+      </div>
+
+      @for (column of columns; track column.title) {
+        <nav class="footer__col" [attr.aria-label]="column.title">
+          <h3 class="footer__title">{{ column.title }}</h3>
+          <ul>
+            @for (link of column.links; track link) {
+              <li><a href="#">{{ link }}</a></li>
+            }
+          </ul>
+        </nav>
+      }
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {{ year }} Praça — marketplace de demonstração.</p>
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram"><app-icon name="camera" [size]="18" /></a>
+        <a href="#" aria-label="Nossas lojas"><app-icon name="store" [size]="18" /></a>
+        <a href="#" aria-label="Central de ajuda"><app-icon name="shield" [size]="18" /></a>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,62 @@
+<div class="topbar">
+  <div class="container topbar__inner">
+    <p class="topbar__place">Enviar para <strong>Brasil</strong></p>
+    <nav class="topbar__links" aria-label="Atalhos">
+      <a href="#">Vender</a>
+      <a href="#">Ajuda</a>
+      <a href="#">Meus pedidos</a>
+    </nav>
+  </div>
+</div>
+
+<header class="header">
+  <div class="container header__inner">
+    <a class="logo" href="/" aria-label="Praça, página inicial">
+      <span class="logo__mark"><app-icon name="store" [size]="20" /></span>
+      <span class="logo__name">Praça</span>
+    </a>
+
+    <form class="search" role="search" (submit)="$event.preventDefault()">
+      <app-icon class="search__icon" name="search" [size]="20" />
+      <input
+        class="search__input"
+        type="search"
+        placeholder="Buscar em todas as categorias"
+        aria-label="Buscar produtos"
+      />
+      <button class="search__btn" type="submit">Buscar</button>
+    </form>
+
+    <div class="header__actions">
+      <a class="action" href="#">
+        <app-icon name="user" [size]="22" />
+        <span class="action__label">Entrar</span>
+      </a>
+      <a class="action action--fav" href="#">
+        <app-icon name="heart" [size]="22" />
+        <span class="action__label">Favoritos</span>
+      </a>
+      <button type="button" class="action action--cart" (click)="cart.show()" aria-label="Abrir carrinho">
+        <app-icon name="cart" [size]="22" />
+        <span class="action__label">Carrinho</span>
+        @if (cart.count() > 0) {
+          <span class="action__count">{{ cart.count() }}</span>
+        }
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="catnav" aria-label="Categorias">
+  <div class="container catnav__inner">
+    <a class="catnav__all" href="#categorias">
+      <app-icon name="menu" [size]="18" />
+      Todas as categorias
+    </a>
+    <ul class="catnav__list">
+      @for (category of categories(); track category.slug) {
+        <li><a href="#categorias">{{ category.name }}</a></li>
+      }
+    </ul>
+  </div>
+</nav>

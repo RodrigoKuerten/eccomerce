@@ -26,6 +26,18 @@ public class Product {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+    @Column(name = "old_price")
+    private BigDecimal oldPrice;
+
+    @Column(name = "seller")
+    private String seller;
+
+    @Column(name = "rating", nullable = false)
+    private double rating;
+
+    @Column(name = "reviews", nullable = false)
+    private int reviews;
+
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
@@ -73,6 +85,38 @@ public class Product {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getOldPrice() {
+        return oldPrice;
+    }
+
+    public void setOldPrice(BigDecimal oldPrice) {
+        this.oldPrice = oldPrice;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public int getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(int reviews) {
+        this.reviews = reviews;
     }
 
     public int getQuantity() {

@@ -2,9 +2,12 @@ package com.ecommerce.rodrigo.product.dto;
 
 import com.ecommerce.rodrigo.product.ProductData;
 import com.ecommerce.rodrigo.product.ProductTypeCategoriesEnum;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
@@ -27,6 +30,19 @@ public record EditProductDTO(
         @NotNull(message = "O preço é obrigatório!")
         @Positive(message = "O preço tem que ser maior que zero!")
         BigDecimal price,
+
+        @PositiveOrZero(message = "O preço antigo não pode ser negativo!")
+        BigDecimal oldPrice,
+
+        @Size(max = 150, message = "O vendedor deve ter no máximo 150 caracteres")
+        String seller,
+
+        @DecimalMin(value = "0.0", message = "A nota não pode ser negativa!")
+        @DecimalMax(value = "5.0", message = "A nota máxima é 5!")
+        Double rating,
+
+        @PositiveOrZero(message = "O número de avaliações não pode ser negativo!")
+        Integer reviews,
 
         @NotNull(message = "A quantidade de produtos é obrigatória")
         @Positive(message = "A quantidade de produtos tem que ser maior que zero")

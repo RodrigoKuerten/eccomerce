@@ -1,0 +1,56 @@
+<div class="overlay" [class.is-open]="cart.isOpen()" (click)="cart.hide()"></div>
+
+<aside class="drawer" [class.is-open]="cart.isOpen()" [attr.aria-hidden]="!cart.isOpen()" aria-label="Carrinho">
+  <header class="drawer__head">
+    <h2 class="drawer__title">
+      Carrinho
+      <span class="drawer__count">{{ cart.count() }}</span>
+    </h2>
+    <button type="button" class="drawer__close" (click)="cart.hide()" aria-label="Fechar carrinho">
+      <app-icon name="close" [size]="20" />
+    </button>
+  </header>
+
+  <div class="drawer__body">
+    @if (cart.list().length === 0) {
+      <div class="empty">
+        <span class="empty__icon"><app-icon name="cart" [size]="30" /></span>
+        <p class="empty__title">Seu carrinho está vazio</p>
+        <p class="empty__text">Explore as ofertas e adicione produtos para começar.</p>
+        <button type="button" class="btn btn--outline btn--sm" (click)="cart.hide()">
+          Continuar comprando
+        </button>
+      </div>
+    } @else {
+      @for (item of cart.list(); track item.product.id) {
+        <div class="item">
+          <div class="item__thumb"><app-icon [name]="item.product.icon" [size]="28" /></div>
+          <div class="item__info">
+            <p class="item__name">{{ item.product.name }}</p>
+            <p class="item__meta">{{ item.product.seller }}</p>
+            <div class="item__qty">
+              <button type="button" (click)="cart.decrement(item.product.id)" aria-label="Diminuir quantidade">−</button>
+              <span>{{ item.qty }}</span>
+              <button type="button" (click)="cart.add(item.product)" aria-label="Aumentar quantidade">+</button>
+            </div>
+          </div>
+          <div class="item__right">
+            <span class="item__price">{{ brl(item.product.price * item.qty) }}</span>
+            <button type="button" class="item__remove" (click)="cart.remove(item.product.id)">Remover</button>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <footer class="drawer__foot">
+    <div class="drawer__total">
+      <span>Subtotal</span>
+      <strong>{{ subtotal() }}</strong>
+    </div>
+    <p class="drawer__note">Frete e impostos calculados no checkout.</p>
+    <button type="button" class="btn btn--primary btn--block" [disabled]="cart.list().length === 0">
+      Finalizar compra
+    </button>
+  </footer>
+</aside>

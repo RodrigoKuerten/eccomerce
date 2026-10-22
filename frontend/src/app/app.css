@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+  background: var(--bg);
+}
+
+#conteudo {
+  display: block;
+  min-height: 50vh;
+}

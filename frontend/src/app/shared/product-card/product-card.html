@@ -1,0 +1,47 @@
+<article class="card">
+  <div class="card__media">
+    <app-icon [name]="product().icon" [size]="76" />
+
+    <div class="card__badges">
+      @if (discount()) {
+        <span class="badge badge--sale">-{{ discount() }}%</span>
+      }
+      @if (product().freeShipping) {
+        <span class="badge badge--free">Frete grátis</span>
+      }
+    </div>
+
+    <button
+      type="button"
+      class="card__fav"
+      [class.is-active]="favorite()"
+      [attr.aria-pressed]="favorite()"
+      (click)="toggleFavorite()"
+      aria-label="Adicionar aos favoritos"
+    >
+      <app-icon name="heart" [size]="18" [fill]="favorite()" />
+    </button>
+  </div>
+
+  <div class="card__body">
+    <p class="card__cat">{{ product().category }}</p>
+    <h3 class="card__name">{{ product().name }}</h3>
+    <p class="card__seller">vendido por <strong>{{ product().seller }}</strong></p>
+    <p class="card__rating">
+      <app-icon class="card__star" name="star" [size]="16" [fill]="true" />
+      {{ score() }}
+      <span class="card__reviews">({{ product().reviews }})</span>
+    </p>
+
+    <div class="card__price">
+      @if (oldPrice()) {
+        <span class="card__old">{{ oldPrice() }}</span>
+      }
+      <span class="card__now">{{ price() }}</span>
+    </div>
+
+    <button type="button" class="btn btn--primary btn--sm btn--block" (click)="addToCart()">
+      Adicionar
+    </button>
+  </div>
+</article>

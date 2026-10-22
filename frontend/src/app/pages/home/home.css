@@ -1,0 +1,272 @@
+:host {
+  display: block;
+  padding-bottom: 24px;
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 32px;
+  align-items: center;
+  margin-top: 28px;
+  padding: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(120% 140% at 100% 0%, var(--accent-weak), transparent 55%),
+    var(--surface);
+}
+
+.hero__title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  max-width: 14ch;
+}
+
+.hero__text {
+  margin-top: 16px;
+  max-width: 46ch;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.hero__panel {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.hero__cat {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.hero__cat:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.hero__cat-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--accent-weak);
+  color: var(--accent-strong);
+}
+
+.hero__cat-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+/* ---------- categorias ---------- */
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.cat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-align: center;
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.cat-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.cat-card__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.cat-card:hover .cat-card__icon {
+  background: var(--accent-weak);
+  color: var(--accent-strong);
+}
+
+.cat-card__name {
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* ---------- faixa confiança ---------- */
+
+.trust {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.trust__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trust__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--accent-strong);
+}
+
+.trust__title {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.trust__text {
+  font-size: 0.8rem;
+  color: var(--text-2);
+}
+
+/* ---------- cta vendedor ---------- */
+
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 36px 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--text);
+  color: #fff;
+}
+
+.cta__title {
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  font-weight: 700;
+}
+
+.cta__sub {
+  margin-top: 8px;
+  max-width: 46ch;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cta__form {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cta__form .field {
+  width: 260px;
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.cta__form .field::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cta__form .field:focus {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+}
+
+.cta__form .btn {
+  background: #fff;
+  color: var(--text);
+}
+
+.cta__form .btn:hover {
+  background: #eef0f3;
+}
+
+/* ---------- responsivo ---------- */
+
+@media (max-width: 960px) {
+  .cat-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .trust {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cta__form {
+    width: 100%;
+  }
+
+  .cta__form .field {
+    width: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 26px;
+  }
+}
+
+@media (max-width: 560px) {
+  .cat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .trust {
+    grid-template-columns: 1fr;
+  }
+
+  .cta__form {
+    flex-direction: column;
+  }
+}

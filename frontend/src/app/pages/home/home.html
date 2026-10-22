@@ -1,0 +1,137 @@
+<section class="hero container">
+  <div class="hero__content">
+    <h1 class="hero__title">Tudo o que você procura, em um só lugar.</h1>
+    <p class="hero__text">
+      Milhões de produtos de vendedores verificados, com entrega para todo o Brasil e compra
+      protegida de ponta a ponta.
+    </p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="#ofertas">Ver ofertas do dia</a>
+      <a class="btn btn--outline" href="#categorias">Explorar categorias</a>
+    </div>
+  </div>
+
+  <div class="hero__panel">
+    @for (category of categories().slice(0, 4); track category.slug) {
+      <a class="hero__cat" href="#categorias">
+        <span class="hero__cat-icon"><app-icon [name]="category.icon" [size]="24" /></span>
+        <span class="hero__cat-name">{{ category.name }}</span>
+      </a>
+    }
+  </div>
+</section>
+
+<section id="categorias" class="section container">
+  <div class="section__head">
+    <div>
+      <h2 class="section__title">Navegue por categoria</h2>
+      <p class="section__sub">Todas as áreas em um só lugar</p>
+    </div>
+  </div>
+
+  <div class="cat-grid">
+    @for (category of categories(); track category.slug) {
+      <a class="cat-card" href="#ofertas">
+        <span class="cat-card__icon"><app-icon [name]="category.icon" [size]="26" /></span>
+        <span class="cat-card__name">{{ category.name }}</span>
+      </a>
+    }
+  </div>
+</section>
+
+<section id="ofertas" class="section container">
+  <div class="section__head">
+    <div>
+      <h2 class="section__title">Ofertas do dia</h2>
+      <p class="section__sub">Descontos que acabam à meia-noite</p>
+    </div>
+    <a class="section__link" href="#ofertas">Ver todas</a>
+  </div>
+
+  @if (loading()) {
+    <div class="grid-products">
+      @for (placeholder of [1, 2, 3, 4]; track placeholder) {
+        <div class="skeleton-card" aria-hidden="true"></div>
+      }
+    </div>
+    <p class="sr-only" role="status">Carregando ofertas</p>
+  } @else if (error()) {
+    <div class="state">
+      <app-icon name="refresh" [size]="26" />
+      <p class="state__title">Não foi possível carregar as ofertas</p>
+      <p class="state__text">Verifique sua conexão e tente novamente.</p>
+      <button type="button" class="btn btn--outline btn--sm" (click)="reload()">Tentar novamente</button>
+    </div>
+  } @else if (deals().length === 0) {
+    <div class="state">
+      <p class="state__title">Nenhuma oferta no momento</p>
+      <p class="state__text">Volte mais tarde para conferir as novidades.</p>
+    </div>
+  } @else {
+    <div class="grid-products">
+      @for (product of deals(); track product.id) {
+        <app-product-card [product]="product" />
+      }
+    </div>
+  }
+</section>
+
+<section class="container section--tight">
+  <div class="trust">
+    @for (item of trust; track item.title) {
+      <div class="trust__item">
+        <span class="trust__icon"><app-icon [name]="item.icon" [size]="22" /></span>
+        <div>
+          <p class="trust__title">{{ item.title }}</p>
+          <p class="trust__text">{{ item.text }}</p>
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section__head">
+    <div>
+      <h2 class="section__title">Recomendados para você</h2>
+      <p class="section__sub">Com base no que está em alta</p>
+    </div>
+    <a class="section__link" href="#ofertas">Ver mais</a>
+  </div>
+
+  @if (loading()) {
+    <div class="grid-products">
+      @for (placeholder of [1, 2, 3, 4]; track placeholder) {
+        <div class="skeleton-card" aria-hidden="true"></div>
+      }
+    </div>
+  } @else if (!error() && recommended().length > 0) {
+    <div class="grid-products">
+      @for (product of recommended(); track product.id) {
+        <app-product-card [product]="product" />
+      }
+    </div>
+  }
+</section>
+
+<section class="container section">
+  <div class="cta">
+    <div class="cta__text">
+      <h2 class="cta__title">Tem algo para vender?</h2>
+      <p class="cta__sub">
+        Abra sua loja na Praça em minutos e alcance milhões de compradores em todo o país.
+      </p>
+    </div>
+    <form class="cta__form" (submit)="$event.preventDefault()">
+      <label class="sr-only" for="seller-email">Seu e-mail</label>
+      <input
+        id="seller-email"
+        class="field"
+        type="email"
+        placeholder="seu@email.com"
+        autocomplete="email"
+      />
+      <button class="btn btn--primary" type="submit">Começar a vender</button>
+    </form>
+  </div>
+</section>
