@@ -9,6 +9,7 @@ export class CatalogStore {
   private readonly _deals = signal<Product[]>([]);
   private readonly _recommended = signal<Product[]>([]);
   private readonly _loading = signal(false);
+  private readonly _categoriesLoading = signal(false);
   private readonly _error = signal(false);
   private started = false;
 
@@ -16,6 +17,7 @@ export class CatalogStore {
   readonly deals = this._deals.asReadonly();
   readonly recommended = this._recommended.asReadonly();
   readonly loading = this._loading.asReadonly();
+  readonly categoriesLoading = this._categoriesLoading.asReadonly();
   readonly error = this._error.asReadonly();
 
   constructor(
@@ -35,11 +37,18 @@ export class CatalogStore {
 
   private fetch(): void {
     this._loading.set(true);
+    this._categoriesLoading.set(true);
     this._error.set(false);
 
     this.categoryService.getAll().subscribe({
-      next: (categories) => this._categories.set(categories),
-      error: () => this._categories.set([]),
+      next: (categories) => {
+        this._categories.set(categories);
+        this._categoriesLoading.set(false);
+      },
+      error: () => {
+        this._categories.set([]);
+        this._categoriesLoading.set(false);
+      },
     });
 
     forkJoin({

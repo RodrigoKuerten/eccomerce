@@ -29,6 +29,22 @@ test('renderiza cabeçalho, categorias e 12 produtos', async ({ page }) => {
   await expect(page.locator('app-product-card')).toHaveCount(12);
 });
 
+test('mostra estados vazios quando as APIs retornam vazio', async ({ page }) => {
+  await page.unroute('**/api/categories');
+  await page.route('**/api/categories', (route) => route.fulfill({ json: [] }));
+  await page.unroute('**/api/products/deals');
+  await page.route('**/api/products/deals', (route) => route.fulfill({ json: [] }));
+  await page.unroute('**/api/products/recommended');
+  await page.route('**/api/products/recommended', (route) => route.fulfill({ json: [] }));
+
+  await page.goto('/');
+
+  await expect(page.getByText('Categorias indisponíveis no momento.')).toBeVisible();
+  await expect(page.getByText('Nenhuma categoria disponível')).toBeVisible();
+  await expect(page.getByText('Nenhuma oferta no momento')).toBeVisible();
+  await expect(page.getByText('Nenhuma recomendação no momento')).toBeVisible();
+});
+
 test('todos os ícones SVG estão centrados', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('app-product-card')).toHaveCount(12);

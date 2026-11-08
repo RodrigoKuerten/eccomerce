@@ -12,11 +12,22 @@
   </div>
 
   <div class="hero__panel">
-    @for (category of categories().slice(0, 4); track category.slug) {
-      <a class="hero__cat" href="#categorias">
-        <span class="hero__cat-icon"><app-icon [name]="category.icon" [size]="24" /></span>
-        <span class="hero__cat-name">{{ category.name }}</span>
-      </a>
+    @if (categoriesLoading()) {
+      @for (placeholder of [1, 2, 3, 4]; track placeholder) {
+        <div class="skeleton-card hero__cat-skeleton" aria-hidden="true"></div>
+      }
+    } @else if (categories().length === 0) {
+      <div class="hero__empty">
+        <app-icon name="search" [size]="22" />
+        <p>Categorias indisponíveis no momento.</p>
+      </div>
+    } @else {
+      @for (category of categories().slice(0, 4); track category.slug) {
+        <a class="hero__cat" href="#categorias">
+          <span class="hero__cat-icon"><app-icon [name]="category.icon" [size]="24" /></span>
+          <span class="hero__cat-name">{{ category.name }}</span>
+        </a>
+      }
     }
   </div>
 </section>
@@ -29,14 +40,32 @@
     </div>
   </div>
 
-  <div class="cat-grid">
-    @for (category of categories(); track category.slug) {
-      <a class="cat-card" href="#ofertas">
-        <span class="cat-card__icon"><app-icon [name]="category.icon" [size]="26" /></span>
-        <span class="cat-card__name">{{ category.name }}</span>
-      </a>
-    }
-  </div>
+  @if (categoriesLoading()) {
+    <div class="cat-grid">
+      @for (placeholder of [1, 2, 3, 4, 5, 6]; track placeholder) {
+        <div class="skeleton-card cat-skeleton" aria-hidden="true"></div>
+      }
+    </div>
+    <p class="sr-only" role="status">Carregando categorias</p>
+  } @else if (categories().length === 0) {
+    <div class="state">
+      <app-icon name="search" [size]="26" />
+      <p class="state__title">Nenhuma categoria disponível</p>
+      <p class="state__text">Tente novamente em instantes ou explore as ofertas do dia.</p>
+      <button type="button" class="btn btn--outline btn--sm" (click)="reload()">
+        Tentar novamente
+      </button>
+    </div>
+  } @else {
+    <div class="cat-grid">
+      @for (category of categories(); track category.slug) {
+        <a class="cat-card" href="#ofertas">
+          <span class="cat-card__icon"><app-icon [name]="category.icon" [size]="26" /></span>
+          <span class="cat-card__name">{{ category.name }}</span>
+        </a>
+      }
+    </div>
+  }
 </section>
 
 <section id="ofertas" class="section container">
@@ -105,7 +134,14 @@
         <div class="skeleton-card" aria-hidden="true"></div>
       }
     </div>
-  } @else if (!error() && recommended().length > 0) {
+  } @else if (!error() && recommended().length === 0) {
+    <div class="state">
+      <app-icon name="refresh" [size]="26" />
+      <p class="state__title">Nenhuma recomendação no momento</p>
+      <p class="state__text">Enquanto isso, confira as ofertas do dia.</p>
+      <a class="btn btn--outline btn--sm" href="#ofertas">Ver ofertas</a>
+    </div>
+  } @else if (!error()) {
     <div class="grid-products">
       @for (product of recommended(); track product.id) {
         <app-product-card [product]="product" />

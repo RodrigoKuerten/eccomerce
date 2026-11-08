@@ -17,6 +17,7 @@ export class Home {
   readonly deals = this.catalog.deals;
   readonly recommended = this.catalog.recommended;
   readonly loading = this.catalog.loading;
+  readonly categoriesLoading = this.catalog.categoriesLoading;
   readonly error = this.catalog.error;
 
   readonly trust = [
