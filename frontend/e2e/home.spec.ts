@@ -29,13 +29,32 @@ test('renderiza cabeçalho, categorias e 12 produtos', async ({ page }) => {
   await expect(page.locator('app-product-card')).toHaveCount(12);
 });
 
-test('a fonte de ícones do Google carrega', async ({ page }) => {
+test('todos os ícones SVG estão centrados', async ({ page }) => {
   await page.goto('/');
-  await page.evaluate(() => document.fonts.ready);
-  const loaded = await page.evaluate(() =>
-    document.fonts.check('24px "Material Symbols Rounded"'),
+  await expect(page.locator('app-product-card')).toHaveCount(12);
+
+  const icons = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('app-icon svg'))
+      .filter((svg) => {
+        const box = svg.getBoundingClientRect();
+        return box.width > 0 && box.height > 0;
+      })
+      .map((svg) => {
+        const path = svg.querySelector('path');
+        const box = svg.getBoundingClientRect();
+        const ink = path?.getBoundingClientRect() ?? box;
+        return {
+          offsetX: (ink.left + ink.right) / 2 - (box.left + box.right) / 2,
+          offsetY: (ink.top + ink.bottom) / 2 - (box.top + box.bottom) / 2,
+        };
+      }),
   );
-  expect(loaded).toBe(true);
+
+  expect(icons.length).toBeGreaterThan(20);
+  for (const icon of icons) {
+    expect(Math.abs(icon.offsetX)).toBeLessThan(0.6);
+    expect(Math.abs(icon.offsetY)).toBeLessThan(0.6);
+  }
 });
 
 test('adicionar ao carrinho abre o drawer e atualiza o subtotal', async ({ page }) => {
