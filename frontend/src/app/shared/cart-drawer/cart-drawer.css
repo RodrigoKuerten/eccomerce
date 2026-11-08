@@ -33,6 +33,10 @@
   transform: translateX(0);
 }
 
+.drawer:focus {
+  outline: none;
+}
+
 .drawer__head {
   display: flex;
   align-items: center;

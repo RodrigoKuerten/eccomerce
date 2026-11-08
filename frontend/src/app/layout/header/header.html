@@ -43,6 +43,9 @@
           <span class="action__count">{{ cart.count() }}</span>
         }
       </button>
+      <span class="sr-only" aria-live="polite">
+        {{ cart.count() }} {{ cart.count() === 1 ? 'item' : 'itens' }} no carrinho
+      </span>
     </div>
   </div>
 </header>

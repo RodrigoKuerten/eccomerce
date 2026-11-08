@@ -1,6 +1,16 @@
 <div class="overlay" [class.is-open]="cart.isOpen()" (click)="cart.hide()"></div>
 
-<aside class="drawer" [class.is-open]="cart.isOpen()" [attr.aria-hidden]="!cart.isOpen()" aria-label="Carrinho">
+<aside
+  #drawer
+  class="drawer"
+  [class.is-open]="cart.isOpen()"
+  [attr.role]="cart.isOpen() ? 'dialog' : null"
+  [attr.aria-modal]="cart.isOpen() ? 'true' : null"
+  [attr.aria-hidden]="cart.isOpen() ? null : 'true'"
+  [attr.inert]="cart.isOpen() ? null : ''"
+  aria-label="Carrinho"
+  tabindex="-1"
+>
   <header class="drawer__head">
     <h2 class="drawer__title">
       Carrinho

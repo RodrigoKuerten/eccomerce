@@ -50,6 +50,47 @@ test('adicionar ao carrinho abre o drawer e atualiza o subtotal', async ({ page 
   await expect(page.locator('app-cart-drawer .drawer__total strong')).toContainText('R$');
 });
 
+test('carrinho prende o foco, fecha com Esc e devolve o foco', async ({ page }) => {
+  await page.goto('/');
+  const add = page
+    .locator('app-product-card')
+    .first()
+    .getByRole('button', { name: 'Adicionar', exact: true });
+  await add.click();
+
+  const drawer = page.locator('app-cart-drawer .drawer');
+  await expect(drawer).toHaveClass(/is-open/);
+  await expect(drawer).toHaveAttribute('role', 'dialog');
+  await expect(drawer).toHaveAttribute('aria-modal', 'true');
+  await expect(drawer).toBeFocused();
+
+  await page.keyboard.press('Shift+Tab');
+  await expect(page.getByRole('button', { name: 'Finalizar compra' })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: 'Fechar carrinho' })).toBeFocused();
+
+  await page.keyboard.press('Escape');
+  await expect(drawer).not.toHaveClass(/is-open/);
+  await expect(drawer).toHaveAttribute('inert', '');
+  await expect(add).toBeFocused();
+});
+
+test('remover o último item mantém o foco no carrinho', async ({ page }) => {
+  await page.goto('/');
+  await page
+    .locator('app-product-card')
+    .first()
+    .getByRole('button', { name: 'Adicionar', exact: true })
+    .click();
+
+  const drawer = page.locator('app-cart-drawer .drawer');
+  await drawer.getByRole('button', { name: 'Remover' }).click();
+  await expect(drawer).toBeFocused();
+
+  await page.keyboard.press('Tab');
+  await expect(drawer.getByRole('button', { name: 'Fechar carrinho' })).toBeFocused();
+});
+
 test('mostra erro quando a API falha e recupera no retry', async ({ page }) => {
   await page.unroute('**/api/products/deals');
   let attempt = 0;

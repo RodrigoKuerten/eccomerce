@@ -5,7 +5,7 @@
   --surface-3: #eef0f3;
   --text: #14161a;
   --text-2: #565e6b;
-  --text-3: #878f9a;
+  --text-3: #667085;
   --border: #e4e7ec;
   --border-strong: #d3d8df;
   --accent: #1f6feb;
@@ -15,7 +15,7 @@
   --success-weak: #e7f5ee;
   --sale: #c02b1d;
   --sale-weak: #fdeceb;
-  --star: #f2a900;
+  --star: #d97706;
   --radius: 12px;
   --radius-sm: 8px;
   --radius-lg: 16px;
@@ -298,7 +298,7 @@ svg {
 
 .section__link {
   flex-shrink: 0;
-  color: var(--accent);
+  color: var(--accent-strong);
   font-size: 0.9rem;
   font-weight: 600;
 }
