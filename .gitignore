@@ -39,6 +39,9 @@ build/
 !.env.example
 hs_err_pid*
 
+docs
+ECC-OPENCODE.md
+
 ### Operating system ###
 .DS_Store
 Thumbs.db

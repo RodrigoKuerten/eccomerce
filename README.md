@@ -1,7 +1,14 @@
 # Ecommerce Backend
 
 Backend REST de um ecommerce desenvolvido com Spring Boot, Spring Data JPA,
-Spring Security e banco H2 para desenvolvimento.
+Spring Security e banco MySQL para desenvolvimento.
+
+## Documentação
+
+A documentação completa do projeto está no vault Obsidian
+[`docs/Project Documentation/`](docs/Project%20Documentation/) — abra essa
+pasta no Obsidian. As regras de manutenção estão em
+[`DOCUMENTATION-RULES.md`](docs/Project%20Documentation/DOCUMENTATION-RULES.md).
 
 ## Requisitos
 
@@ -22,9 +29,9 @@ Executar os testes:
 .\mvnw.cmd clean test
 ```
 
-O banco H2 em memoria e criado automaticamente durante a execucao. As
-configuracoes de banco e ambiente devem ser fornecidas por propriedades do
-Spring ou variaveis de ambiente antes de usar um banco persistente.
+O banco MySQL e as credenciais devem ser configurados no `.env` da raiz
+(`DB_NAME`, `DB_USERNAME`, `DB_PASSWORD`) ou por propriedades do Spring. O
+schema e criado/atualizado automaticamente por `ddl-auto=update`.
 
 ## Endpoints principais
 
