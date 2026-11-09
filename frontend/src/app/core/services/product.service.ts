@@ -4,6 +4,23 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Product } from '../models/product.model';
 
+export interface CreateProductPayload {
+  name: string;
+  description: string;
+  category: string;
+  price: number;
+  oldPrice?: number | null;
+  seller?: string;
+  rating?: number;
+  reviews?: number;
+  quantity: number;
+  image?: string | null;
+}
+
+export interface UpdateProductPayload extends CreateProductPayload {
+  id: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   private readonly http = inject(HttpClient);
@@ -28,5 +45,28 @@ export class ProductService {
   search(term: string): Observable<Product[]> {
     const params = new HttpParams().set('q', term);
     return this.http.get<Product[]>(this.baseUrl, { params });
+  }
+
+  create(payload: CreateProductPayload): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${environment.apiUrl}/product/create`,
+      payload,
+      { withCredentials: true },
+    );
+  }
+
+  update(payload: UpdateProductPayload): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(
+      `${environment.apiUrl}/product/edit`,
+      payload,
+      { withCredentials: true },
+    );
+  }
+
+  delete(id: number): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(
+      `${environment.apiUrl}/product/delete`,
+      { body: id, withCredentials: true },
+    );
   }
 }

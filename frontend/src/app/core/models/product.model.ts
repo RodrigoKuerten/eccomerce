@@ -1,6 +1,7 @@
 export interface Product {
   id: number;
   name: string;
+  description?: string;
   category: string;
   seller: string;
   price: number;
@@ -9,6 +10,9 @@ export interface Product {
   reviews: number;
   freeShipping: boolean;
   icon: string;
+  quantity?: number;
+  available?: boolean;
+  hasImage?: boolean;
 }
 
 export interface Category {
