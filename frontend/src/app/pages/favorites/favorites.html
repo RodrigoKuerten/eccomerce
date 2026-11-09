@@ -1,0 +1,26 @@
+<section class="section container">
+  <header class="favorites__head">
+    <div>
+      <h1 class="favorites__title">Favoritos</h1>
+      <p class="favorites__sub">Os produtos que você salvou para ver depois.</p>
+    </div>
+    @if (favorites.items().length > 0) {
+      <p class="favorites__count">{{ favorites.items().length }} produtos</p>
+    }
+  </header>
+
+  @if (favorites.items().length === 0) {
+    <div class="state">
+      <app-icon name="heart" [size]="26" />
+      <p class="state__title">Nenhum favorito ainda</p>
+      <p class="state__text">Toque no coração de um produto para salvá-lo aqui.</p>
+      <a class="btn btn--outline btn--sm" routerLink="/products">Explorar produtos</a>
+    </div>
+  } @else {
+    <div class="grid-products">
+      @for (product of favorites.items(); track product.id) {
+        <app-product-card [product]="product" />
+      }
+    </div>
+  }
+</section>
