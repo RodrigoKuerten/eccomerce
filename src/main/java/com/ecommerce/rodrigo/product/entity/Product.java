@@ -1,6 +1,7 @@
 package com.ecommerce.rodrigo.product.entity;
 
 import com.ecommerce.rodrigo.product.ProductTypeCategoriesEnum;
+import com.ecommerce.rodrigo.user.entity.User;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -32,6 +33,10 @@ public class Product {
     @Column(name = "seller")
     private String seller;
 
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User sellerUser;
+
     @Column(name = "rating", nullable = false)
     private double rating;
 
@@ -44,7 +49,8 @@ public class Product {
     @Version
     private Long version;
 
-    @Column(name = "image")
+    @Lob
+    @Column(name = "image", columnDefinition = "LONGBLOB")
     private byte[] image;
 
     public Integer getId() {
@@ -101,6 +107,14 @@ public class Product {
 
     public void setSeller(String seller) {
         this.seller = seller;
+    }
+
+    public User getSellerUser() {
+        return sellerUser;
+    }
+
+    public void setSellerUser(User sellerUser) {
+        this.sellerUser = sellerUser;
     }
 
     public double getRating() {

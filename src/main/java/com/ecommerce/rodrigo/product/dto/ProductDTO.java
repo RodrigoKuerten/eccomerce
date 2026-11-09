@@ -15,5 +15,6 @@ public record ProductDTO(
         int reviews,
         int quantity,
         boolean available,
-        boolean freeShipping
+        boolean freeShipping,
+        boolean hasImage
 ) {}
