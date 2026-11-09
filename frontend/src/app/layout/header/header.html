@@ -2,23 +2,23 @@
   <div class="container topbar__inner">
     <p class="topbar__place">Enviar para <strong>Brasil</strong></p>
     <nav class="topbar__links" aria-label="Atalhos">
-      <a href="#">Vender</a>
-      <a href="#">Ajuda</a>
-      <a href="#">Meus pedidos</a>
+      <a routerLink="/help">Ajuda</a>
+      <a routerLink="/orders">Meus pedidos</a>
     </nav>
   </div>
 </div>
 
 <header class="header">
   <div class="container header__inner">
-    <a class="logo" href="/" aria-label="Praça, página inicial">
+    <a class="logo" routerLink="/" aria-label="Praça, página inicial">
       <span class="logo__mark"><img src="logo-mark.svg" alt="" width="22" height="22" /></span>
       <span class="logo__name">Praça</span>
     </a>
 
-    <form class="search" role="search" (submit)="$event.preventDefault()">
+    <form class="search" role="search" (submit)="$event.preventDefault(); search(searchInput.value)">
       <app-icon class="search__icon" name="search" [size]="20" />
       <input
+        #searchInput
         class="search__input"
         type="search"
         placeholder="Buscar em todas as categorias"
@@ -28,11 +28,18 @@
     </form>
 
     <div class="header__actions">
-      <a class="action" href="#">
-        <app-icon name="user" [size]="22" />
-        <span class="action__label">Entrar</span>
-      </a>
-      <a class="action action--fav" href="#">
+      @if (auth.isAuthenticated()) {
+        <a class="action" routerLink="/account" [attr.aria-label]="'Minha conta, ' + firstName()">
+          <app-icon name="user" [size]="22" />
+          <span class="action__label">{{ firstName() }}</span>
+        </a>
+      } @else {
+        <a class="action" routerLink="/login">
+          <app-icon name="user" [size]="22" />
+          <span class="action__label">Entrar</span>
+        </a>
+      }
+      <a class="action action--fav" routerLink="/favorites">
         <app-icon name="heart" [size]="22" />
         <span class="action__label">Favoritos</span>
       </a>
@@ -52,13 +59,13 @@
 
 <nav class="catnav" aria-label="Categorias">
   <div class="container catnav__inner">
-    <a class="catnav__all" href="#categorias">
+    <a class="catnav__all" routerLink="/" fragment="categories">
       <app-icon name="menu" [size]="18" />
       Todas as categorias
     </a>
     <ul class="catnav__list">
       @for (category of categories(); track category.slug) {
-        <li><a href="#categorias">{{ category.name }}</a></li>
+        <li><a [routerLink]="['/category', category.slug]">{{ category.name }}</a></li>
       }
     </ul>
   </div>

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="footer__grid">
       <div class="footer__brand">
-        <a class="footer__logo" href="/" aria-label="Praça, página inicial">
+        <a class="footer__logo" routerLink="/" aria-label="Praça, página inicial">
           <span class="footer__mark"><img src="logo-mark.svg" alt="" width="22" height="22" /></span>
           <span>Praça</span>
         </a>
@@ -23,8 +23,8 @@
         <nav class="footer__col" [attr.aria-label]="column.title">
           <h3 class="footer__title">{{ column.title }}</h3>
           <ul>
-            @for (link of column.links; track link) {
-              <li><a href="#">{{ link }}</a></li>
+            @for (link of column.links; track link.label) {
+              <li><a [routerLink]="link.link">{{ link.label }}</a></li>
             }
           </ul>
         </nav>
@@ -34,9 +34,9 @@
     <div class="footer__bottom">
       <p>© {{ year }} Praça. Todos os direitos reservados.</p>
       <div class="footer__social">
-        <a href="#" aria-label="Instagram"><app-icon name="camera" [size]="18" /></a>
-        <a href="#" aria-label="Nossas lojas"><app-icon name="pin" [size]="18" /></a>
-        <a href="#" aria-label="Central de ajuda"><app-icon name="shield" [size]="18" /></a>
+        <a routerLink="/content/contact" aria-label="Instagram"><app-icon name="camera" [size]="18" /></a>
+        <a routerLink="/seller" aria-label="Nossas lojas"><app-icon name="pin" [size]="18" /></a>
+        <a routerLink="/help" aria-label="Central de ajuda"><app-icon name="shield" [size]="18" /></a>
       </div>
     </div>
   </div>
