@@ -1,8 +1,8 @@
 package com.ecommerce.rodrigo.order;
 
 import com.ecommerce.rodrigo.order.dto.CreateOrderDTO;
+import com.ecommerce.rodrigo.order.dto.OrderDTO;
 import com.ecommerce.rodrigo.order.dto.UpdateOrderStatusDTO;
-import com.ecommerce.rodrigo.order.entity.Order;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class OrderController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<Order> findOrdersByUser(@PathVariable("userId") long userId) {
+    public List<OrderDTO> findOrdersByUser(@PathVariable("userId") long userId) {
         return orderService.findOrdersByUser(userId);
     }
 
