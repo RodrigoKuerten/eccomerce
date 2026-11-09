@@ -9,13 +9,14 @@ import {
   inject,
   viewChild,
 } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { CartStore } from '../../core/state/cart.store';
 import { Icon } from '../icon/icon';
 import { brl } from '../util/format';
 
 @Component({
   selector: 'app-cart-drawer',
-  imports: [Icon],
+  imports: [Icon, RouterLink],
   templateUrl: './cart-drawer.html',
   styleUrl: './cart-drawer.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,6 +27,7 @@ import { brl } from '../util/format';
 })
 export class CartDrawer {
   readonly cart = inject(CartStore);
+  private readonly router = inject(Router);
   readonly subtotal = computed(() => brl(this.cart.subtotal()));
   readonly brl = brl;
 
@@ -63,6 +65,11 @@ export class CartDrawer {
         { injector: this.injector },
       );
     });
+  }
+
+  checkout(): void {
+    this.cart.hide();
+    this.router.navigate(['/checkout']);
   }
 
   protected onEscape(): void {

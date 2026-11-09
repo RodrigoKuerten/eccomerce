@@ -6,8 +6,8 @@
       protegida de ponta a ponta.
     </p>
     <div class="hero__actions">
-      <a class="btn btn--primary" href="#ofertas">Ver ofertas do dia</a>
-      <a class="btn btn--outline" href="#categorias">Explorar categorias</a>
+      <a class="btn btn--primary" routerLink="/offers">Ver ofertas do dia</a>
+      <a class="btn btn--outline" routerLink="/" fragment="categories">Explorar categorias</a>
     </div>
   </div>
 
@@ -23,7 +23,7 @@
       </div>
     } @else {
       @for (category of categories().slice(0, 4); track category.slug) {
-        <a class="hero__cat" href="#categorias">
+        <a class="hero__cat" [routerLink]="['/category', category.slug]">
           <span class="hero__cat-icon"><app-icon [name]="category.icon" [size]="24" /></span>
           <span class="hero__cat-name">{{ category.name }}</span>
         </a>
@@ -32,7 +32,7 @@
   </div>
 </section>
 
-<section id="categorias" class="section container">
+<section id="categories" class="section container">
   <div class="section__head">
     <div>
       <h2 class="section__title">Navegue por categoria</h2>
@@ -59,7 +59,7 @@
   } @else {
     <div class="cat-grid">
       @for (category of categories(); track category.slug) {
-        <a class="cat-card" href="#ofertas">
+        <a class="cat-card" [routerLink]="['/category', category.slug]">
           <span class="cat-card__icon"><app-icon [name]="category.icon" [size]="26" /></span>
           <span class="cat-card__name">{{ category.name }}</span>
         </a>
@@ -68,13 +68,13 @@
   }
 </section>
 
-<section id="ofertas" class="section container">
+<section id="offers" class="section container">
   <div class="section__head">
     <div>
       <h2 class="section__title">Ofertas do dia</h2>
       <p class="section__sub">Descontos que acabam à meia-noite</p>
     </div>
-    <a class="section__link" href="#ofertas">Ver todas</a>
+    <a class="section__link" routerLink="/offers">Ver todas</a>
   </div>
 
   @if (loading()) {
@@ -125,7 +125,7 @@
       <h2 class="section__title">Recomendados para você</h2>
       <p class="section__sub">Com base no que está em alta</p>
     </div>
-    <a class="section__link" href="#ofertas">Ver mais</a>
+    <a class="section__link" routerLink="/products">Ver mais</a>
   </div>
 
   @if (loading()) {
@@ -139,7 +139,7 @@
       <app-icon name="refresh" [size]="26" />
       <p class="state__title">Nenhuma recomendação no momento</p>
       <p class="state__text">Enquanto isso, confira as ofertas do dia.</p>
-      <a class="btn btn--outline btn--sm" href="#ofertas">Ver ofertas</a>
+      <a class="btn btn--outline btn--sm" href="#offers">Ver ofertas</a>
     </div>
   } @else if (!error()) {
     <div class="grid-products">
@@ -158,16 +158,6 @@
         Abra sua loja na Praça em minutos e alcance milhões de compradores em todo o país.
       </p>
     </div>
-    <form class="cta__form" (submit)="$event.preventDefault()">
-      <label class="sr-only" for="seller-email">Seu e-mail</label>
-      <input
-        id="seller-email"
-        class="field"
-        type="email"
-        placeholder="seu@email.com"
-        autocomplete="email"
-      />
-      <button class="btn btn--primary" type="submit">Começar a vender</button>
-    </form>
+    <a class="btn btn--primary" routerLink="/seller/register">Começar a vender</a>
   </div>
 </section>

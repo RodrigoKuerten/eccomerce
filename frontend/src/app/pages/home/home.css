@@ -41,10 +41,51 @@
   margin-top: 26px;
 }
 
+.hero__content > * {
+  animation: hero-rise 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero__content > :nth-child(1) {
+  animation-delay: 40ms;
+}
+
+.hero__content > :nth-child(2) {
+  animation-delay: 100ms;
+}
+
+.hero__content > :nth-child(3) {
+  animation-delay: 160ms;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero__panel {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+  animation: hero-panel 600ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+}
+
+@keyframes hero-panel {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero__cat {
@@ -73,6 +114,11 @@
   border-radius: 10px;
   background: var(--accent-weak);
   color: var(--accent-strong);
+  transition: transform 180ms ease;
+}
+
+.hero__cat:hover .hero__cat-icon {
+  transform: scale(1.04);
 }
 
 .hero__cat-name {
@@ -141,12 +187,13 @@
   border-radius: 999px;
   background: var(--surface-2);
   color: var(--text-2);
-  transition: background-color 0.18s ease, color 0.18s ease;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 180ms ease;
 }
 
 .cat-card:hover .cat-card__icon {
   background: var(--accent-weak);
   color: var(--accent-strong);
+  transform: scale(1.04);
 }
 
 .cat-card__name {
@@ -220,37 +267,6 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.cta__form {
-  display: flex;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.cta__form .field {
-  width: 260px;
-  border-color: transparent;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-.cta__form .field::placeholder {
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.cta__form .field:focus {
-  background: rgba(255, 255, 255, 0.16);
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
-}
-
-.cta__form .btn {
-  background: #fff;
-  color: var(--text);
-}
-
-.cta__form .btn:hover {
-  background: #eef0f3;
-}
-
 /* ---------- responsivo ---------- */
 
 @media (max-width: 960px) {
@@ -265,14 +281,6 @@
   .cta {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .cta__form {
-    width: 100%;
-  }
-
-  .cta__form .field {
-    width: 100%;
   }
 }
 
@@ -290,9 +298,5 @@
 
   .trust {
     grid-template-columns: 1fr;
-  }
-
-  .cta__form {
-    flex-direction: column;
   }
 }

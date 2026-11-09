@@ -1,6 +1,22 @@
 <article class="card">
   <div class="card__media">
-    <app-icon [name]="product().icon" [size]="76" />
+    <a
+      class="card__media-link"
+      [routerLink]="['/product', product().id]"
+      [attr.aria-label]="'Ver detalhes de ' + product().name"
+    >
+      @if (imageUrl() && !imageError()) {
+        <img
+          class="card__img"
+          [src]="imageUrl()"
+          [alt]="product().name"
+          loading="lazy"
+          (error)="imageError.set(true)"
+        />
+      } @else {
+        <app-icon [name]="product().icon" [size]="76" />
+      }
+    </a>
 
     <div class="card__badges">
       @if (discount()) {
@@ -16,8 +32,10 @@
       class="card__fav"
       [class.is-active]="favorite()"
       [attr.aria-pressed]="favorite()"
+      [attr.aria-label]="
+        favorite() ? 'Remover dos favoritos' : 'Adicionar aos favoritos'
+      "
       (click)="toggleFavorite()"
-      aria-label="Adicionar aos favoritos"
     >
       <app-icon name="heart" [size]="18" [fill]="favorite()" />
     </button>
@@ -25,7 +43,9 @@
 
   <div class="card__body">
     <p class="card__cat">{{ product().category }}</p>
-    <h3 class="card__name">{{ product().name }}</h3>
+    <h3 class="card__name">
+      <a [routerLink]="['/product', product().id]">{{ product().name }}</a>
+    </h3>
     <p class="card__seller">vendido por <strong>{{ product().seller }}</strong></p>
     <p class="card__rating">
       <app-icon class="card__star" name="star" [size]="16" [fill]="true" />
@@ -40,8 +60,13 @@
       <span class="card__now">{{ price() }}</span>
     </div>
 
-    <button type="button" class="btn btn--primary btn--sm btn--block" (click)="addToCart()">
-      Adicionar
+    <button
+      type="button"
+      class="btn btn--primary btn--sm btn--block"
+      [disabled]="!available()"
+      (click)="addToCart()"
+    >
+      {{ available() ? 'Adicionar' : 'Indisponível' }}
     </button>
   </div>
 </article>

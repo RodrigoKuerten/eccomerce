@@ -36,7 +36,9 @@
         <div class="item">
           <div class="item__thumb"><app-icon [name]="item.product.icon" [size]="28" /></div>
           <div class="item__info">
-            <p class="item__name">{{ item.product.name }}</p>
+            <a class="item__name" [routerLink]="['/product', item.product.id]" (click)="cart.hide()">
+              {{ item.product.name }}
+            </a>
             <p class="item__meta">{{ item.product.seller }}</p>
             <div class="item__qty">
               <button type="button" (click)="cart.decrement(item.product.id)" aria-label="Diminuir quantidade">−</button>
@@ -59,7 +61,12 @@
       <strong>{{ subtotal() }}</strong>
     </div>
     <p class="drawer__note">Frete e impostos calculados no checkout.</p>
-    <button type="button" class="btn btn--primary btn--block" [disabled]="cart.list().length === 0">
+    <button
+      type="button"
+      class="btn btn--primary btn--block"
+      [disabled]="cart.list().length === 0"
+      (click)="checkout()"
+    >
       Finalizar compra
     </button>
   </footer>
