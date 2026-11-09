@@ -1,0 +1,196 @@
+<section class="section container">
+  <header class="dashboard__head">
+    <div>
+      <p class="dashboard__eyebrow">Área do vendedor</p>
+      <h1 class="dashboard__title">Painel do vendedor</h1>
+      <p class="dashboard__sub">Acompanhe seus anúncios, estoque e pedidos.</p>
+    </div>
+    @if (auth.user(); as user) {
+      <div class="dashboard__actions">
+        <a class="btn btn--primary btn--sm" routerLink="/seller/new">Novo anúncio</a>
+        <span class="dashboard__greeting">
+          Olá, <strong>{{ user.storeName || user.fullName }}</strong>
+        </span>
+        <button type="button" class="btn btn--ghost btn--sm" (click)="logout()">Sair</button>
+      </div>
+    }
+  </header>
+
+  @if (!auth.ready()) {
+    <div class="state">
+      <p class="state__title">Verificando sua conta...</p>
+    </div>
+  } @else if (!auth.isAuthenticated()) {
+    <div class="state">
+      <app-icon name="store" [size]="26" />
+      <p class="state__title">Entre para acessar o painel do vendedor</p>
+      <p class="state__text">Publique produtos e acompanhe suas vendas.</p>
+      <a
+        class="btn btn--primary btn--sm"
+        routerLink="/login"
+        [queryParams]="{ returnUrl: '/seller' }"
+      >
+        Entrar ou criar conta
+      </a>
+    </div>
+  } @else if (!auth.isSeller()) {
+    <div class="state">
+      <app-icon name="store" [size]="26" />
+      <p class="state__title">Você ainda não tem uma loja</p>
+      <p class="state__text">Crie sua conta de vendedor para acessar o painel da sua loja.</p>
+      <a class="btn btn--primary btn--sm" routerLink="/seller/register">Quero vender na Praça</a>
+    </div>
+  } @else if (loading()) {
+    <div class="state">
+      <p class="state__title">Carregando seu painel...</p>
+    </div>
+  } @else if (error()) {
+    <div class="state">
+      <app-icon name="refresh" [size]="26" />
+      <p class="state__title">Não foi possível carregar o painel</p>
+      <p class="state__text">Tente novamente em instantes.</p>
+      <button type="button" class="btn btn--outline btn--sm" (click)="load()">
+        Tentar novamente
+      </button>
+    </div>
+  } @else if (dashboard(); as data) {
+    <div class="stats">
+      <div class="stat">
+        <span class="stat__label">Anúncios</span>
+        <strong class="stat__value">{{ data.productCount }}</strong>
+      </div>
+      <div class="stat">
+        <span class="stat__label">Estoque total</span>
+        <strong class="stat__value">{{ data.totalStock }}</strong>
+      </div>
+      <div class="stat">
+        <span class="stat__label">Valor em estoque</span>
+        <strong class="stat__value">{{ inventoryValue() }}</strong>
+      </div>
+      <div class="stat">
+        <span class="stat__label">Esgotados</span>
+        <strong class="stat__value">{{ data.outOfStock }}</strong>
+      </div>
+      <div class="stat">
+        <span class="stat__label">Pedidos</span>
+        <strong class="stat__value">{{ data.orderCount }}</strong>
+      </div>
+    </div>
+
+    <section class="panel panel--sales">
+      <div class="panel__head">
+        <div>
+          <h2>Receita dos últimos 7 dias</h2>
+          <p class="panel__sub">Acompanhe o ritmo de vendas da sua loja.</p>
+        </div>
+        <div class="sales__total">
+          <span class="sales__total-label">Total no período</span>
+          <strong class="sales__total-value">{{ brl(salesTotal()) }}</strong>
+        </div>
+      </div>
+
+      @if (sales().length === 0) {
+        <p class="panel__empty">Ainda não há vendas registradas nos últimos 7 dias.</p>
+      } @else {
+        <div class="sales__chart" role="img" [attr.aria-label]="salesSummary()">
+          @for (day of sales(); track $index) {
+            <div class="sales__col">
+              <div class="sales__track">
+                <div
+                  class="sales__bar"
+                  [style.height.%]="barHeight(day.revenue)"
+                  [style.animation-delay.ms]="$index * 45"
+                  [attr.title]="salesDayTitle(day)"
+                ></div>
+              </div>
+              <span class="sales__label">{{ day.label }}</span>
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <div class="dashboard__grid">
+      <section class="panel">
+        <div class="panel__head">
+          <h2>Meus anúncios</h2>
+          <a class="panel__link" routerLink="/seller/new">Anunciar produto</a>
+        </div>
+
+        @if (data.products.length === 0) {
+          <div class="state state--compact">
+            <app-icon name="store" [size]="24" />
+            <p class="state__title">Você ainda não tem anúncios</p>
+            <p class="state__text">Publique seu primeiro produto para começar a vender.</p>
+            <a class="btn btn--primary btn--sm" routerLink="/seller/new">Criar primeiro anúncio</a>
+          </div>
+        } @else {
+          <ul class="products">
+            @for (product of data.products; track product.id) {
+              <li class="product">
+                <a class="product__main" [routerLink]="['/product', product.id]">
+                  <span class="product__thumb">
+                    @if (product.hasImage) {
+                      <img [src]="imageUrl(product.id)" [alt]="product.name" />
+                    } @else {
+                      <app-icon [name]="product.icon" [size]="24" />
+                    }
+                  </span>
+                  <span class="product__info">
+                    <strong>{{ product.name }}</strong>
+                    <span>{{ product.category }}</span>
+                    <span>{{ brl(product.price) }}</span>
+                  </span>
+                </a>
+                <div class="product__meta">
+                  <span class="product__stock" [class.is-empty]="(product.quantity ?? 0) === 0">
+                    {{ product.quantity ?? 0 }} em estoque
+                  </span>
+                  <div class="product__actions">
+                    <a class="btn btn--outline btn--sm" [routerLink]="['/seller/edit', product.id]">
+                      Editar
+                    </a>
+                    <button
+                      type="button"
+                      class="btn btn--ghost btn--sm product__remove"
+                      (click)="remove(product.id, product.name)"
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                </div>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      <section class="panel">
+        <div class="panel__head">
+          <h2>Pedidos recentes</h2>
+          <a class="panel__link" routerLink="/orders">Ver todos</a>
+        </div>
+
+        @if (data.recentOrders.length === 0) {
+          <p class="panel__empty">Nenhum pedido recebido ainda.</p>
+        } @else {
+          <ul class="orders">
+            @for (order of data.recentOrders; track order.id) {
+              <li class="order">
+                <div>
+                  <strong>{{ order.productName }}</strong>
+                  <span>Pedido #{{ order.id }} · {{ dateLabel(order.createdAt) }}</span>
+                  <span>{{ order.quantity }} unidade(s)</span>
+                </div>
+                <div class="order__right">
+                  <span class="order__status">{{ statusLabel(order.status) }}</span>
+                  <strong>{{ brl(order.total) }}</strong>
+                </div>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+    </div>
+  }
+</section>

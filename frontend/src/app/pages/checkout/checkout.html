@@ -1,0 +1,69 @@
+<section class="section container">
+  <header class="checkout__head">
+    <div>
+      <h1 class="checkout__title">Finalizar compra</h1>
+      <p class="checkout__sub">Revise seu pedido antes de confirmar.</p>
+    </div>
+  </header>
+
+  @if (success()) {
+    <div class="state">
+      <app-icon name="shield" [size]="30" />
+      <p class="state__title">Pedido confirmado!</p>
+      <p class="state__text">Seu pedido foi registrado e já aparece em “Meus pedidos”.</p>
+      <a class="btn btn--primary btn--sm" routerLink="/orders">Ver meus pedidos</a>
+      <a class="btn btn--ghost btn--sm" routerLink="/products">Continuar comprando</a>
+    </div>
+  } @else if (cart.list().length === 0) {
+    <div class="state">
+      <app-icon name="cart" [size]="26" />
+      <p class="state__title">Seu carrinho está vazio</p>
+      <p class="state__text">Adicione produtos antes de finalizar a compra.</p>
+      <a class="btn btn--outline btn--sm" routerLink="/products">Explorar produtos</a>
+    </div>
+  } @else if (!auth.ready()) {
+    <div class="state">
+      <p class="state__title">Verificando sua conta...</p>
+    </div>
+  } @else if (!auth.isAuthenticated()) {
+    <div class="state">
+      <app-icon name="user" [size]="26" />
+      <p class="state__title">Entre para finalizar a compra</p>
+      <p class="state__text">Sua conta é usada para registrar o pedido.</p>
+      <a class="btn btn--primary btn--sm" routerLink="/login" [queryParams]="{ returnUrl: '/checkout' }">
+        Entrar ou criar conta
+      </a>
+    </div>
+  } @else {
+    @if (errorMessage()) {
+      <p class="checkout__error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <div class="checkout">
+      <div class="checkout__items">
+        @for (item of cart.list(); track item.product.id) {
+          <div class="checkout-item">
+            <div class="checkout-item__info">
+              <strong>{{ item.product.name }}</strong>
+              <span>{{ item.qty }} × {{ brl(item.product.price) }}</span>
+            </div>
+            <strong>{{ brl(item.product.price * item.qty) }}</strong>
+          </div>
+        }
+      </div>
+
+      <aside class="checkout__summary">
+        <h2>Resumo</h2>
+        <div class="checkout__line">
+          <span>Subtotal</span>
+          <strong>{{ subtotal() }}</strong>
+        </div>
+        <p class="checkout__note">Frete e impostos são calculados pela loja no envio.</p>
+        <button class="btn btn--primary btn--block" type="button" [disabled]="submitting()" (click)="confirm()">
+          {{ submitting() ? 'Confirmando...' : 'Confirmar pedido' }}
+        </button>
+        <a class="checkout__back" routerLink="/products">Continuar comprando</a>
+      </aside>
+    </div>
+  }
+</section>

@@ -1,0 +1,349 @@
+<section class="help-hero">
+  <div class="container">
+    <p class="help-hero__eyebrow">Central de ajuda</p>
+    <h1 class="help-hero__title">Como podemos ajudar?</h1>
+    <p class="help-hero__sub">
+      Encontre respostas claras sobre compras, vendas, pagamentos, entregas e sua conta.
+      Se precisar de mais apoio, fale com a gente no final desta página.
+    </p>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="help-topics">
+    @for (topic of topics; track topic.id) {
+      <a class="help-topic" [routerLink]="['/help']" [fragment]="topic.id">
+        <span class="help-topic__icon"><app-icon [name]="topic.icon" [size]="20" /></span>
+        <span>{{ topic.label }}</span>
+      </a>
+    }
+  </div>
+
+  <div class="help-layout">
+    <aside class="help-nav" aria-label="Tópicos da ajuda">
+      <h2 class="help-nav__title">Nesta página</h2>
+      <nav>
+        @for (topic of topics; track topic.id) {
+          <a [routerLink]="['/help']" [fragment]="topic.id">{{ topic.label }}</a>
+        }
+      </nav>
+      <div class="help-nav__contact">
+        <strong>Precisa de ajuda?</strong>
+        <p>Fale com nosso time de atendimento.</p>
+        <a class="btn btn--outline btn--sm" routerLink="/help" fragment="contact">Ir para contato</a>
+      </div>
+    </aside>
+
+    <div class="help-content">
+      <section id="getting-started" class="help-section">
+        <h2>Primeiros passos</h2>
+        <p class="help-section__intro">
+          Tudo o que você precisa para começar a comprar ou vender na Praça.
+        </p>
+
+        <details>
+          <summary>Como criar uma conta?</summary>
+          <p>
+            Clique em <strong>Entrar</strong> no topo da página e depois em
+            <strong>Criar conta</strong>. Informe seu nome, e-mail, telefone, endereço e uma
+            senha segura. A conta serve para comprar, favoritar produtos, acompanhar pedidos
+            e vender.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como buscar um produto?</summary>
+          <p>
+            Use o campo de busca no topo. Você pode buscar pelo nome ou pela descrição do
+            produto. Também é possível navegar pelas categorias na página inicial ou pelo
+            menu de categorias abaixo do cabeçalho.
+          </p>
+        </details>
+
+        <details>
+          <summary>Preciso ter conta para comprar?</summary>
+          <p>
+            Você pode navegar e montar o carrinho sem entrar, mas é necessário estar logado
+            para finalizar a compra e acompanhar o pedido em “Meus pedidos”.
+          </p>
+        </details>
+      </section>
+
+      <section id="buying" class="help-section">
+        <h2>Comprar</h2>
+        <p class="help-section__intro">Do carrinho à confirmação do pedido, sem complicação.</p>
+
+        <details>
+          <summary>Como faço uma compra?</summary>
+          <p>
+            Abra o produto, confira a descrição, o vendedor e o estoque, e clique em
+            <strong>Adicionar ao carrinho</strong>. No carrinho, ajuste as quantidades e
+            clique em <strong>Finalizar compra</strong>. Revise o resumo e confirme o pedido.
+          </p>
+        </details>
+
+        <details>
+          <summary>O que é compra protegida?</summary>
+          <p>
+            A compra protegida reúne as regras de segurança da Praça: o pedido fica
+            registrado na sua conta e você pode acompanhar o status em “Meus pedidos”. Se
+            algo der errado, fale com o atendimento informando o número do pedido.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como salvar um produto para depois?</summary>
+          <p>
+            Clique no coração no card ou na página do produto. Os itens salvos aparecem em
+            <strong>Favoritos</strong>, no topo da página. Os favoritos ficam salvos neste
+            navegador.
+          </p>
+        </details>
+
+        <details>
+          <summary>O que significa “Frete grátis”?</summary>
+          <p>
+            É um benefício oferecido pelo vendedor ou pela Praça para aquele produto. O frete
+            não é cobrado no checkout. O prazo e a região de entrega continuam valendo.
+          </p>
+        </details>
+
+        <details>
+          <summary>Posso comprar de mais de um vendedor no mesmo pedido?</summary>
+          <p>
+            Sim. O carrinho pode ter produtos de vendedores diferentes. Cada item é
+            registrado separadamente para que o vendedor responsável consiga acompanhar a
+            entrega.
+          </p>
+        </details>
+      </section>
+
+      <section id="selling" class="help-section">
+        <h2>Vender</h2>
+        <p class="help-section__intro">
+          Publique seus produtos, acompanhe o estoque e veja os pedidos recebidos.
+        </p>
+
+        <details>
+          <summary>Como começar a vender?</summary>
+          <p>
+            Crie sua conta e acesse <strong>Vender</strong> no topo da página. No painel do
+            vendedor, clique em <strong>Novo anúncio</strong>, preencha nome, descrição,
+            categoria, preço, estoque e envie uma foto. Depois clique em
+            <strong>Publicar anúncio</strong>.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como editar um anúncio?</summary>
+          <p>
+            No painel do vendedor, localize o produto em “Meus anúncios” e clique em
+            <strong>Editar</strong>. Você pode mudar texto, preço, estoque, categoria e foto.
+            As alterações aparecem na loja assim que forem salvas.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como atualizar o estoque?</summary>
+          <p>
+            Abra o anúncio em <strong>Editar</strong> e altere o campo “Estoque”. O produto
+            fica indisponível automaticamente quando o estoque chega a zero.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como excluir um anúncio?</summary>
+          <p>
+            No painel do vendedor, clique em <strong>Excluir</strong> ao lado do produto e
+            confirme. A exclusão é permanente e o produto deixa de aparecer na loja.
+          </p>
+        </details>
+
+        <details>
+          <summary>Onde vejo os pedidos que recebi?</summary>
+          <p>
+            O painel do vendedor mostra os pedidos recentes com produto, quantidade, total,
+            status e data. Para acompanhar suas próprias compras, use “Meus pedidos”.
+          </p>
+        </details>
+
+        <details>
+          <summary>Existe alguma taxa para vender?</summary>
+          <p>
+            Publicar anúncios é gratuito nesta versão da Praça. Antes de uma cobrança de
+            comissão ou plano, os valores serão informados com clareza. Consulte também a
+            página de planos e taxas.
+          </p>
+        </details>
+      </section>
+
+      <section id="account" class="help-section">
+        <h2>Conta e segurança</h2>
+        <p class="help-section__intro">
+          Mantenha seus dados atualizados e proteja o acesso à sua conta.
+        </p>
+
+        <details>
+          <summary>Como alterar meus dados?</summary>
+          <p>
+            Entre na sua conta, abra <strong>Minha conta</strong> e escolha
+            <strong>Dados pessoais</strong>. Você pode atualizar nome, telefone, endereço e
+            CPF. O e-mail de login é exibido, mas não pode ser alterado por essa tela.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como adicionar ou corrigir meu CPF?</summary>
+          <p>
+            Em <strong>Minha conta → Dados pessoais</strong>, preencha o campo CPF com os 11
+            dígitos (com ou sem pontuação) e salve. O CPF é usado para nota fiscal e
+            segurança da conta e não pode estar vinculado a outra conta.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como trocar minha senha?</summary>
+          <p>
+            Em <strong>Minha conta → Segurança</strong>, informe a senha atual e a nova senha
+            duas vezes. A nova senha precisa ter pelo menos 8 caracteres, com letra
+            maiúscula, minúscula, número e um símbolo como @ $ ! % * ? &.
+          </p>
+        </details>
+
+        <details>
+          <summary>Esqueci minha senha. O que faço?</summary>
+          <p>
+            A recuperação automática por e-mail ainda não está disponível nesta versão. Fale
+            com o atendimento pelo canal de contato informando o e-mail da conta para
+            receber orientação.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como sair da conta?</summary>
+          <p>
+            Use o botão <strong>Sair</strong> no topo da página de conta ou no painel do
+            vendedor. Em computadores compartilhados, saia sempre ao terminar.
+          </p>
+        </details>
+      </section>
+
+      <section id="payments" class="help-section">
+        <h2>Pagamentos</h2>
+        <p class="help-section__intro">Entenda como o valor do pedido é calculado.</p>
+
+        <details>
+          <summary>Quais formas de pagamento a Praça aceita?</summary>
+          <p>
+            A loja exibe Pix, cartão de crédito (Visa, Mastercard e Elo), boleto e parcelamento
+            em até 12x. Nesta versão de demonstração, o pedido é registrado sem cobrança real;
+            a tela de checkout mostra o resumo do valor.
+          </p>
+        </details>
+
+        <details>
+          <summary>O valor do frete entra no total?</summary>
+          <p>
+            O subtotal do carrinho mostra os produtos. Quando o frete é grátis, não há
+            cobrança adicional. Nos outros casos, o vendedor calcula o frete no envio e
+            combina com você.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como funciona o reembolso?</summary>
+          <p>
+            Se você solicitar uma devolução dentro do prazo, o reembolso é combinado com o
+            vendedor e o atendimento. O valor volta pelo mesmo meio de pagamento usado na
+            compra, após a conferência do produto.
+          </p>
+        </details>
+      </section>
+
+      <section id="shipping" class="help-section">
+        <h2>Entregas e prazos</h2>
+        <p class="help-section__intro">Saiba quando e como seu pedido chega.</p>
+
+        <details>
+          <summary>Quem define o prazo de entrega?</summary>
+          <p>
+            O prazo é definido pelo vendedor de cada produto, considerando a sua região e a
+            transportadora. O prazo começa a contar depois da confirmação do pedido.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como acompanhar meu pedido?</summary>
+          <p>
+            Acesse <strong>Meus pedidos</strong> no topo da página. Cada pedido mostra o
+            produto, a quantidade, o total, a data e o status atual.
+          </p>
+        </details>
+
+        <details>
+          <summary>O que fazer se o endereço estiver errado?</summary>
+          <p>
+            Atualize o endereço em <strong>Minha conta → Dados pessoais</strong> e fale com o
+            vendedor o quanto antes. Se o pedido já tiver sido enviado, a transportadora pode
+            não permitir a alteração.
+          </p>
+        </details>
+      </section>
+
+      <section id="returns" class="help-section">
+        <h2>Trocas e devoluções</h2>
+        <p class="help-section__intro">Compre com tranquilidade e saiba o que fazer se precisar.</p>
+
+        <details>
+          <summary>Qual é o prazo para troca ou devolução?</summary>
+          <p>
+            Você pode solicitar troca ou devolução em até 30 dias após receber o produto,
+            desde que ele esteja sem sinais de uso e, quando possível, com a embalagem
+            original.
+          </p>
+        </details>
+
+        <details>
+          <summary>Como solicitar uma troca ou devolução?</summary>
+          <p>
+            Abra <strong>Meus pedidos</strong>, localize o pedido e fale com o vendedor pelo
+            canal de contato. Informe o número do pedido, o motivo e, se puder, envie fotos
+            do produto.
+          </p>
+        </details>
+
+        <details>
+          <summary>Quem paga o frete da devolução?</summary>
+          <p>
+            O custo é combinado com o vendedor no momento da solicitação. Em casos de
+            produto com defeito ou item errado, o vendedor deve orientar a devolução sem
+            custo para você.
+          </p>
+        </details>
+      </section>
+
+      <section id="contact" class="help-section help-section--contact">
+        <h2>Fale conosco</h2>
+        <p>
+          Não encontrou o que precisava? Nosso time de atendimento pode ajudar com compras,
+          vendas, pagamentos e acesso à conta.
+        </p>
+        <div class="help-contact">
+          <div>
+            <strong>E-mail</strong>
+            <p>atendimento@praca.example</p>
+          </div>
+          <div>
+            <strong>Horário</strong>
+            <p>Segunda a sexta, das 9h às 18h</p>
+          </div>
+          <div>
+            <strong>Para agilizar</strong>
+            <p>Tenha em mãos o número do pedido e o e-mail da conta.</p>
+          </div>
+        </div>
+        <a class="btn btn--outline btn--sm" routerLink="/products">Voltar a explorar produtos</a>
+      </section>
+    </div>
+  </div>
+</section>

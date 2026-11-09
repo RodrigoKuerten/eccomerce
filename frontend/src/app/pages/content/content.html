@@ -1,0 +1,28 @@
+<section class="section container">
+  <nav class="breadcrumb" aria-label="Você está aqui">
+    <a routerLink="/">Início</a>
+    <span aria-hidden="true">/</span>
+    <span>{{ entry()?.title || 'Página não encontrada' }}</span>
+  </nav>
+
+  @if (entry(); as content) {
+    <article class="content">
+      <h1>{{ content.title }}</h1>
+      <p class="content__intro">{{ content.intro }}</p>
+      @for (paragraph of content.paragraphs; track paragraph) {
+        <p>{{ paragraph }}</p>
+      }
+      <div class="content__actions">
+        <a class="btn btn--outline btn--sm" routerLink="/products">Explorar produtos</a>
+        <a class="btn btn--ghost btn--sm" routerLink="/">Voltar para a home</a>
+      </div>
+    </article>
+  } @else {
+    <div class="state">
+      <app-icon name="search" [size]="26" />
+      <p class="state__title">Página não encontrada</p>
+      <p class="state__text">O endereço pode estar incorreto ou a página foi removida.</p>
+      <a class="btn btn--outline btn--sm" routerLink="/">Voltar para a home</a>
+    </div>
+  }
+</section>
