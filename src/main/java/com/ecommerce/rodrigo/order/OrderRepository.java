@@ -7,4 +7,10 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByUser_Id(long userId);
+
+    List<Order> findByProduct_SellerUser_Id(Long sellerId);
+
+    List<Order> findTop5ByProduct_SellerUser_IdOrderByCreatedAtDesc(Long sellerId);
+
+    long countByProduct_SellerUser_Id(Long sellerId);
 }

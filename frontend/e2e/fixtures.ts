@@ -18,18 +18,18 @@ export interface CategoryFixture {
 }
 
 export const CATEGORIES: CategoryFixture[] = [
-  { slug: 'eletronicos', name: 'Eletrônicos', icon: 'tv' },
-  { slug: 'moda', name: 'Moda', icon: 'shirt' },
-  { slug: 'casa', name: 'Casa & Decoração', icon: 'sofa' },
-  { slug: 'esportes', name: 'Esportes', icon: 'dumbbell' },
-  { slug: 'beleza', name: 'Beleza', icon: 'beauty' },
-  { slug: 'brinquedos', name: 'Brinquedos', icon: 'ball' },
+  { slug: 'electronics', name: 'Eletrônicos', icon: 'tv' },
+  { slug: 'fashion', name: 'Moda', icon: 'shirt' },
+  { slug: 'house', name: 'Casa & Decoração', icon: 'sofa' },
+  { slug: 'sports', name: 'Esportes', icon: 'dumbbell' },
+  { slug: 'beauty', name: 'Beleza', icon: 'beauty' },
+  { slug: 'toys', name: 'Brinquedos', icon: 'ball' },
   { slug: 'games', name: 'Games', icon: 'gamepad' },
-  { slug: 'livros', name: 'Livros', icon: 'book' },
-  { slug: 'automotivo', name: 'Automotivo', icon: 'car' },
+  { slug: 'books', name: 'Livros', icon: 'book' },
+  { slug: 'automotive', name: 'Automotivo', icon: 'car' },
   { slug: 'pet', name: 'Pet Shop', icon: 'pet' },
-  { slug: 'ferramentas', name: 'Ferramentas', icon: 'tool' },
-  { slug: 'mercado', name: 'Mercado', icon: 'cart' },
+  { slug: 'tools', name: 'Ferramentas', icon: 'tool' },
+  { slug: 'food', name: 'Mercado', icon: 'cart' },
 ];
 
 export const PRODUCTS: ProductFixture[] = Array.from({ length: 12 }, (_, index) => ({

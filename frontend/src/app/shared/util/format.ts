@@ -19,3 +19,7 @@ export function rating(value: number): string {
 export function discountPercent(price: number, oldPrice: number): number {
   return Math.round((1 - price / oldPrice) * 100);
 }
+
+export function dateBr(value: string | Date): string {
+  return new Date(value).toLocaleDateString('pt-BR');
+}

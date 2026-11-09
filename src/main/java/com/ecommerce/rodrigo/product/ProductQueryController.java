@@ -1,6 +1,7 @@
 package com.ecommerce.rodrigo.product;
 
 import com.ecommerce.rodrigo.product.dto.ProductDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,5 +38,10 @@ public class ProductQueryController {
     @GetMapping("/{id}")
     public ProductDTO findById(@PathVariable("id") Integer id) {
         return productService.findDTOById(id);
+    }
+
+    @GetMapping("/{id}/image")
+    public ResponseEntity<byte[]> findImage(@PathVariable("id") Integer id) {
+        return productService.findImage(id);
     }
 }

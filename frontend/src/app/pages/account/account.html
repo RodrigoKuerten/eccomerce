@@ -1,0 +1,261 @@
+<section class="section container">
+  <header class="account__head">
+    <div>
+      <p class="account__eyebrow">Minha conta</p>
+      <h1 class="account__title">Configurações da conta</h1>
+      <p class="account__sub">Atualize seus dados, CPF e segurança.</p>
+    </div>
+    @if (profile(); as user) {
+      <div class="account__identity">
+        <span class="account__avatar"><app-icon name="user" [size]="24" /></span>
+        <span>
+          <strong>{{ user.fullName }}</strong>
+          <small>{{ user.email }}</small>
+        </span>
+        <button type="button" class="btn btn--ghost btn--sm" (click)="logout()">Sair</button>
+      </div>
+    }
+  </header>
+
+  @if (!auth.ready()) {
+    <div class="state">
+      <p class="state__title">Verificando sua conta...</p>
+    </div>
+  } @else if (!auth.isAuthenticated()) {
+    <div class="state">
+      <app-icon name="user" [size]="26" />
+      <p class="state__title">Entre para acessar sua conta</p>
+      <p class="state__text">Atualize seus dados e acompanhe seus pedidos.</p>
+      <a class="btn btn--primary btn--sm" routerLink="/login" [queryParams]="{ returnUrl: '/account' }">
+        Entrar ou criar conta
+      </a>
+    </div>
+  } @else if (loading()) {
+    <div class="state">
+      <p class="state__title">Carregando seus dados...</p>
+    </div>
+  } @else if (error()) {
+    <div class="state">
+      <app-icon name="refresh" [size]="26" />
+      <p class="state__title">Não foi possível carregar sua conta</p>
+      <p class="state__text">Tente novamente em instantes.</p>
+      <button type="button" class="btn btn--outline btn--sm" (click)="loadProfile()">
+        Tentar novamente
+      </button>
+    </div>
+  } @else if (profile(); as user) {
+    <div class="account">
+      <aside class="account__nav">
+        <button
+          type="button"
+          class="account__nav-item"
+          [class.is-active]="tab() === 'profile'"
+          (click)="tab.set('profile')"
+        >
+          <app-icon name="user" [size]="18" />
+          Dados pessoais
+        </button>
+        <button
+          type="button"
+          class="account__nav-item"
+          [class.is-active]="tab() === 'security'"
+          (click)="tab.set('security')"
+        >
+          <app-icon name="shield" [size]="18" />
+          Segurança
+        </button>
+        <div class="account__nav-divider"></div>
+        <a class="account__nav-item" routerLink="/orders">
+          <app-icon name="truck" [size]="18" />
+          Meus pedidos
+        </a>
+        <a class="account__nav-item" routerLink="/favorites">
+          <app-icon name="heart" [size]="18" />
+          Favoritos
+        </a>
+        @if (auth.isSeller()) {
+          <a class="account__nav-item" routerLink="/seller">
+            <app-icon name="store" [size]="18" />
+            Ir para a área de vendas
+          </a>
+        } @else {
+          <a class="account__nav-item" routerLink="/seller/register">
+            <app-icon name="store" [size]="18" />
+            Quero vender
+          </a>
+        }
+      </aside>
+
+      <div class="account__content">
+        <div class="account__seller">
+          <span class="account__seller-icon"><app-icon name="store" [size]="20" /></span>
+          <div>
+            @if (auth.isSeller()) {
+              <strong>Sua loja está ativa</strong>
+              <p>Acompanhe anúncios, estoque e pedidos no painel do vendedor.</p>
+            } @else {
+              <strong>Quero vender na Praça</strong>
+              <p>Ative o perfil de vendedor na sua conta atual. Você continua comprando normalmente.</p>
+            }
+          </div>
+          <a
+            class="btn btn--outline btn--sm"
+            [routerLink]="auth.isSeller() ? '/seller' : '/seller/register'"
+          >
+            {{ auth.isSeller() ? 'Ir para a área de vendas' : 'Começar a vender' }}
+          </a>
+        </div>
+        @if (tab() === 'profile') {
+          <div class="account-card">
+            <div class="account-card__head">
+              <div>
+                <h2>Dados pessoais</h2>
+                <p>Essas informações aparecem nos seus pedidos e anúncios.</p>
+              </div>
+            </div>
+
+            @if (profileMessage()) {
+              <p class="account__success" role="status">{{ profileMessage() }}</p>
+            }
+            @if (profileError()) {
+              <p class="account__error" role="alert">{{ profileError() }}</p>
+            }
+
+            <form [formGroup]="profileForm" (submit)="$event.preventDefault(); saveProfile()" novalidate>
+              <div class="account__row">
+                <div>
+                  <label class="field-label" for="account-name">Nome completo</label>
+                  <input id="account-name" class="field" type="text" formControlName="fullName" />
+                  @if (profileForm.controls.fullName.touched && profileForm.controls.fullName.invalid) {
+                    <p class="field-error">Informe seu nome.</p>
+                  }
+                </div>
+                <div>
+                  <label class="field-label" for="account-email">E-mail</label>
+                  <input
+                    id="account-email"
+                    class="field"
+                    type="email"
+                    [value]="user.email"
+                    readonly
+                    aria-describedby="email-note"
+                  />
+                  <p id="email-note" class="field-note">O e-mail de login não pode ser alterado por aqui.</p>
+                </div>
+              </div>
+
+              <div class="account__row">
+                <div>
+                  <label class="field-label" for="account-phone">Telefone</label>
+                  <input id="account-phone" class="field" type="tel" formControlName="phoneNumber" />
+                  @if (profileForm.controls.phoneNumber.touched && profileForm.controls.phoneNumber.invalid) {
+                    <p class="field-error">Informe um telefone.</p>
+                  }
+                </div>
+                <div>
+                  <label class="field-label" for="account-cpf">CPF</label>
+                  <input
+                    id="account-cpf"
+                    class="field"
+                    type="text"
+                    inputmode="numeric"
+                    formControlName="cpf"
+                    placeholder="000.000.000-00"
+                    autocomplete="off"
+                  />
+                  @if (profileForm.controls.cpf.touched && profileForm.controls.cpf.invalid) {
+                    <p class="field-error">Informe um CPF com 11 dígitos.</p>
+                  }
+                  <p class="field-note">Usado para emissão de nota fiscal e segurança da conta.</p>
+                </div>
+              </div>
+
+              <label class="field-label" for="account-address">Endereço</label>
+              <input id="account-address" class="field" type="text" formControlName="address" />
+              @if (profileForm.controls.address.touched && profileForm.controls.address.invalid) {
+                <p class="field-error">Informe seu endereço.</p>
+              }
+
+              <button class="btn btn--primary account__save" type="submit" [disabled]="savingProfile()">
+                {{ savingProfile() ? 'Salvando...' : 'Salvar alterações' }}
+              </button>
+            </form>
+          </div>
+        } @else {
+          <div class="account-card">
+            <div class="account-card__head">
+              <div>
+                <h2>Segurança</h2>
+                <p>Altere sua senha periodicamente para proteger sua conta.</p>
+              </div>
+            </div>
+
+            @if (passwordMessage()) {
+              <p class="account__success" role="status">{{ passwordMessage() }}</p>
+            }
+            @if (passwordError()) {
+              <p class="account__error" role="alert">{{ passwordError() }}</p>
+            }
+
+            <form [formGroup]="passwordForm" (submit)="$event.preventDefault(); savePassword()" novalidate>
+              <label class="field-label" for="current-password">Senha atual</label>
+              <input
+                id="current-password"
+                class="field"
+                type="password"
+                formControlName="currentPassword"
+                autocomplete="current-password"
+              />
+              @if (passwordForm.controls.currentPassword.touched && passwordForm.controls.currentPassword.invalid) {
+                <p class="field-error">Informe sua senha atual.</p>
+              }
+
+              <div class="account__row">
+                <div>
+                  <label class="field-label" for="new-password">Nova senha</label>
+                  <input
+                    id="new-password"
+                    class="field"
+                    type="password"
+                    formControlName="newPassword"
+                    autocomplete="new-password"
+                  />
+                  @if (passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword.invalid) {
+                    <p class="field-error">
+                      Use 8+ caracteres, com maiúscula, minúscula, número e símbolo (@$!%*?&).
+                    </p>
+                  }
+                </div>
+                <div>
+                  <label class="field-label" for="confirm-password">Confirmar nova senha</label>
+                  <input
+                    id="confirm-password"
+                    class="field"
+                    type="password"
+                    formControlName="confirmPassword"
+                    autocomplete="new-password"
+                  />
+                  @if (passwordForm.controls.confirmPassword.touched && passwordForm.controls.confirmPassword.invalid) {
+                    <p class="field-error">Confirme a nova senha.</p>
+                  }
+                </div>
+              </div>
+
+              <button class="btn btn--primary account__save" type="submit" [disabled]="savingPassword()">
+                {{ savingPassword() ? 'Alterando...' : 'Alterar senha' }}
+              </button>
+            </form>
+
+            <div class="account__session">
+              <div>
+                <strong>Sessão atual</strong>
+                <p>Você está conectado como {{ user.email }}.</p>
+              </div>
+              <button type="button" class="btn btn--outline btn--sm" (click)="logout()">Sair da conta</button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</section>

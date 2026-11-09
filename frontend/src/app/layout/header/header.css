@@ -61,7 +61,6 @@
   height: 34px;
   border-radius: 9px;
   background: var(--text);
-  color: #fff;
 }
 
 .logo__name {
@@ -226,10 +225,6 @@
 
   .action {
     padding: 8px;
-  }
-
-  .action--fav {
-    display: none;
   }
 }
 

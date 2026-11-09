@@ -1,0 +1,23 @@
+.favorites__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.favorites__title {
+  font-size: clamp(1.6rem, 3vw, 2rem);
+}
+
+.favorites__sub {
+  margin-top: 4px;
+  color: var(--text-2);
+  font-size: 0.92rem;
+}
+
+.favorites__count {
+  flex-shrink: 0;
+  color: var(--text-2);
+  font-size: 0.85rem;
+}

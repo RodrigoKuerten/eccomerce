@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { FILLED_ICONS, ICONS, IconGlyph } from './icon-data';
 
 const SYMBOLS: Record<string, string> = {
   search: 'search',
@@ -10,6 +11,7 @@ const SYMBOLS: Record<string, string> = {
   heart: 'favorite',
   star: 'star',
   store: 'storefront',
+  pin: 'location_on',
   truck: 'local_shipping',
   shield: 'verified_user',
   refresh: 'autorenew',
@@ -37,19 +39,31 @@ const SYMBOLS: Record<string, string> = {
   tool: 'handyman',
 };
 
+const FALLBACK: IconGlyph = ICONS['storefront'];
+
 @Component({
   selector: 'app-icon',
-  template: `<span
-    class="material-symbols-rounded"
-    [class.is-filled]="fill()"
-    [style.font-size.px]="size()"
+  template: `<svg
+    viewBox="0 -960 960 960"
+    [attr.width]="size()"
+    [attr.height]="size()"
     aria-hidden="true"
-  >{{ symbol() }}</span>`,
+    focusable="false"
+  ><path [attr.d]="glyph().path" [attr.transform]="transform()" fill="currentColor" /></svg>`,
+  styleUrl: './icon.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Icon {
   readonly name = input.required<string>();
   readonly size = input(20);
   readonly fill = input(false);
-  readonly symbol = computed(() => SYMBOLS[this.name()] ?? this.name());
+
+  readonly glyph = computed<IconGlyph>(() => {
+    const symbol = SYMBOLS[this.name()] ?? this.name();
+    return (this.fill() ? FILLED_ICONS[symbol] : undefined) ?? ICONS[symbol] ?? FALLBACK;
+  });
+
+  protected readonly transform = computed(
+    () => `translate(${this.glyph().x} ${this.glyph().y})`,
+  );
 }

@@ -1,0 +1,136 @@
+<section class="auth-page container">
+  <div class="auth-card">
+    <p class="auth-card__eyebrow">Praça</p>
+    <h1 class="auth-card__title">
+      {{ mode() === 'login' ? 'Entrar na sua conta' : 'Criar sua conta' }}
+    </h1>
+    <p class="auth-card__sub">
+      {{
+        mode() === 'login'
+          ? 'Acesse para comprar, favoritar e anunciar produtos.'
+          : 'Cadastre-se para comprar e vender na Praça.'
+      }}
+    </p>
+
+    @if (errorMessage()) {
+      <p class="auth-card__error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    @if (mode() === 'login') {
+      <form [formGroup]="loginForm" (submit)="$event.preventDefault(); submitLogin()" novalidate>
+        <label class="field-label" for="login-email">E-mail</label>
+        <input
+          id="login-email"
+          class="field"
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="voce@email.com"
+        />
+        @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+          <p class="field-error">Informe um e-mail válido.</p>
+        }
+
+        <label class="field-label" for="login-password">Senha</label>
+        <input
+          id="login-password"
+          class="field"
+          type="password"
+          formControlName="password"
+          autocomplete="current-password"
+          placeholder="Sua senha"
+        />
+        @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+          <p class="field-error">A senha é obrigatória.</p>
+        }
+
+        <button class="btn btn--primary btn--block auth-submit" type="submit" [disabled]="submitting()">
+          {{ submitting() ? 'Entrando...' : 'Entrar' }}
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        Ainda não tem conta?
+        <a routerLink="/register" [queryParams]="{ returnUrl }">Criar conta</a>
+      </p>
+    } @else {
+      <form [formGroup]="registerForm" (submit)="$event.preventDefault(); submitRegister()" novalidate>
+        <label class="field-label" for="reg-name">Nome completo</label>
+        <input
+          id="reg-name"
+          class="field"
+          type="text"
+          formControlName="fullName"
+          autocomplete="name"
+          placeholder="Seu nome"
+        />
+        @if (registerForm.controls.fullName.touched && registerForm.controls.fullName.invalid) {
+          <p class="field-error">Informe seu nome completo.</p>
+        }
+
+        <label class="field-label" for="reg-email">E-mail</label>
+        <input
+          id="reg-email"
+          class="field"
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="voce@email.com"
+        />
+        @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+          <p class="field-error">Informe um e-mail válido.</p>
+        }
+
+        <label class="field-label" for="reg-password">Senha</label>
+        <input
+          id="reg-password"
+          class="field"
+          type="password"
+          formControlName="password"
+          autocomplete="new-password"
+          placeholder="Mínimo 8 caracteres"
+        />
+        @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
+          <p class="field-error">
+            Use ao menos 8 caracteres, com maiúscula, minúscula, número e símbolo (@$!%*?&).
+          </p>
+        }
+
+        <label class="field-label" for="reg-phone">Telefone</label>
+        <input
+          id="reg-phone"
+          class="field"
+          type="tel"
+          formControlName="phoneNumber"
+          autocomplete="tel"
+          placeholder="(11) 99999-9999"
+        />
+        @if (registerForm.controls.phoneNumber.touched && registerForm.controls.phoneNumber.invalid) {
+          <p class="field-error">Informe um telefone.</p>
+        }
+
+        <label class="field-label" for="reg-address">Endereço</label>
+        <input
+          id="reg-address"
+          class="field"
+          type="text"
+          formControlName="address"
+          autocomplete="street-address"
+          placeholder="Rua, número, cidade"
+        />
+        @if (registerForm.controls.address.touched && registerForm.controls.address.invalid) {
+          <p class="field-error">Informe seu endereço.</p>
+        }
+
+        <button class="btn btn--primary btn--block auth-submit" type="submit" [disabled]="submitting()">
+          {{ submitting() ? 'Criando conta...' : 'Criar conta' }}
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        Já tem conta?
+        <a routerLink="/login" [queryParams]="{ returnUrl }">Entrar</a>
+      </p>
+    }
+  </div>
+</section>

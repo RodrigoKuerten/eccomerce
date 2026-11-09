@@ -51,4 +51,8 @@ export class CartStore {
   hide(): void {
     this.open.set(false);
   }
+
+  clear(): void {
+    this.items.set([]);
+  }
 }

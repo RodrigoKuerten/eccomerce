@@ -1,0 +1,198 @@
+<section class="section container">
+  <header class="seller__head">
+    <div>
+      <p class="seller__eyebrow">Área do vendedor</p>
+      <h1 class="seller__title">
+        {{ editing() ? 'Editar anúncio' : 'Anuncie seu produto' }}
+      </h1>
+      <p class="seller__sub">
+        {{
+          editing()
+            ? 'Atualize as informações, o estoque ou a foto do seu produto.'
+            : 'Cadastre o item, envie uma foto e comece a vender na Praça.'
+        }}
+      </p>
+    </div>
+    <div class="seller__header-actions">
+      <a class="btn btn--outline btn--sm" routerLink="/seller">Voltar ao painel</a>
+      @if (auth.user(); as user) {
+        <div class="seller__account">
+          <span
+            >Olá, <strong>{{ user.fullName }}</strong></span
+          >
+          <button type="button" class="btn btn--ghost btn--sm" (click)="logout()">Sair</button>
+        </div>
+      }
+    </div>
+  </header>
+
+  @if (!auth.ready()) {
+    <div class="state">
+      <p class="state__title">Verificando sua conta...</p>
+    </div>
+  } @else if (!auth.isAuthenticated()) {
+    <div class="state">
+      <app-icon name="user" [size]="26" />
+      <p class="state__title">Entre para anunciar</p>
+      <p class="state__text">Você precisa de uma conta para publicar produtos na Praça.</p>
+      <a class="btn btn--primary btn--sm" routerLink="/login" [queryParams]="{ returnUrl }">
+        Entrar ou criar conta
+      </a>
+    </div>
+  } @else if (!auth.isSeller()) {
+    <div class="state">
+      <app-icon name="store" [size]="26" />
+      <p class="state__title">Você ainda não tem uma loja</p>
+      <p class="state__text">Crie sua conta de vendedor para publicar anúncios na Praça.</p>
+      <a class="btn btn--primary btn--sm" routerLink="/seller/register">Quero vender na Praça</a>
+    </div>
+  } @else {
+    @if (successMessage()) {
+      <div class="seller__success" role="status">
+        <app-icon name="shield" [size]="20" />
+        <span>{{ successMessage() }}</span>
+        <a routerLink="/seller">Voltar ao painel</a>
+      </div>
+    }
+
+    @if (errorMessage()) {
+      <p class="seller__error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <form
+      class="seller__form"
+      [formGroup]="form"
+      (submit)="$event.preventDefault(); submit()"
+      novalidate
+    >
+      <div class="seller__photo">
+        <p class="seller__section-title">Foto do produto</p>
+        <div class="seller__preview">
+          @if (imagePreview()) {
+            <img [src]="imagePreview()" alt="Prévia da foto do produto" />
+          } @else {
+            <app-icon name="camera" [size]="42" />
+            <span>JPG, PNG ou WebP · até 5 MB</span>
+          }
+        </div>
+        <div class="seller__photo-actions">
+          <label class="btn btn--outline btn--sm" for="product-image">
+            {{ imagePreview() ? 'Trocar foto' : 'Escolher foto' }}
+          </label>
+          <input
+            id="product-image"
+            class="sr-only"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            (change)="onFile($event)"
+          />
+          @if (hasNewImage()) {
+            <button type="button" class="btn btn--ghost btn--sm" (click)="clearImage()">
+              Remover nova foto
+            </button>
+          }
+        </div>
+        @if (imageError()) {
+          <p class="field-error">{{ imageError() }}</p>
+        }
+      </div>
+
+      <div class="seller__fields">
+        <label class="field-label" for="product-name">Nome do produto</label>
+        <input
+          id="product-name"
+          class="field"
+          type="text"
+          formControlName="name"
+          maxlength="150"
+          placeholder="Ex.: Fone Bluetooth com cancelamento de ruído"
+        />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+          <p class="field-error">Informe o nome do produto.</p>
+        }
+
+        <label class="field-label" for="product-category">Categoria</label>
+        <select id="product-category" class="field" formControlName="category">
+          <option value="">Selecione uma categoria</option>
+          @for (category of categories(); track category.slug) {
+            <option [value]="category.slug">{{ category.name }}</option>
+          }
+        </select>
+        @if (form.controls.category.touched && form.controls.category.invalid) {
+          <p class="field-error">Escolha uma categoria.</p>
+        }
+
+        <div class="seller__row">
+          <div>
+            <label class="field-label" for="product-price">Preço (R$)</label>
+            <input
+              id="product-price"
+              class="field"
+              type="number"
+              min="0.01"
+              step="0.01"
+              formControlName="price"
+            />
+            @if (form.controls.price.touched && form.controls.price.invalid) {
+              <p class="field-error">Informe um preço maior que zero.</p>
+            }
+          </div>
+          <div>
+            <label class="field-label" for="product-old-price">Preço antigo (opcional)</label>
+            <input
+              id="product-old-price"
+              class="field"
+              type="number"
+              min="0"
+              step="0.01"
+              formControlName="oldPrice"
+            />
+          </div>
+          <div>
+            <label class="field-label" for="product-quantity">Estoque</label>
+            <input
+              id="product-quantity"
+              class="field"
+              type="number"
+              min="1"
+              step="1"
+              formControlName="quantity"
+            />
+            @if (form.controls.quantity.touched && form.controls.quantity.invalid) {
+              <p class="field-error">Informe a quantidade em estoque.</p>
+            }
+          </div>
+        </div>
+
+        <label class="field-label" for="product-description">Descrição</label>
+        <textarea
+          id="product-description"
+          class="field seller__textarea"
+          formControlName="description"
+          maxlength="2000"
+          rows="5"
+          placeholder="Detalhe o produto, estado de conservação, medidas e o que mais for importante."
+        ></textarea>
+        @if (form.controls.description.touched && form.controls.description.invalid) {
+          <p class="field-error">Informe a descrição do produto.</p>
+        }
+
+        <p class="seller__seller-line">
+          Vendido por <strong>{{ auth.user()?.fullName }}</strong>
+        </p>
+
+        <button class="btn btn--primary seller__submit" type="submit" [disabled]="submitting()">
+          {{
+            submitting()
+              ? editing()
+                ? 'Salvando...'
+                : 'Publicando...'
+              : editing()
+                ? 'Salvar alterações'
+                : 'Publicar anúncio'
+          }}
+        </button>
+      </div>
+    </form>
+  }
+</section>

@@ -1,0 +1,68 @@
+<section class="section container">
+  <header class="orders__head">
+    <div>
+      <h1 class="orders__title">Meus pedidos</h1>
+      <p class="orders__sub">Acompanhe suas compras na Praça.</p>
+    </div>
+  </header>
+
+  @if (!auth.ready()) {
+    <div class="state">
+      <p class="state__title">Carregando sua conta...</p>
+    </div>
+  } @else if (!auth.isAuthenticated()) {
+    <div class="state">
+      <app-icon name="user" [size]="26" />
+      <p class="state__title">Entre para ver seus pedidos</p>
+      <p class="state__text">Acesse sua conta para acompanhar suas compras.</p>
+      <a class="btn btn--primary btn--sm" routerLink="/login" [queryParams]="{ returnUrl: '/orders' }">
+        Entrar
+      </a>
+    </div>
+  } @else if (loading()) {
+    <div class="state">
+      <p class="state__title">Carregando pedidos...</p>
+    </div>
+  } @else if (error()) {
+    <div class="state">
+      <app-icon name="refresh" [size]="26" />
+      <p class="state__title">Não foi possível carregar seus pedidos</p>
+      <p class="state__text">Tente novamente em instantes.</p>
+      <button type="button" class="btn btn--outline btn--sm" (click)="load()">
+        Tentar novamente
+      </button>
+    </div>
+  } @else if (orders().length === 0) {
+    <div class="state">
+      <app-icon name="cart" [size]="26" />
+      <p class="state__title">Você ainda não tem pedidos</p>
+      <p class="state__text">Explore os produtos e faça sua primeira compra.</p>
+      <a class="btn btn--outline btn--sm" routerLink="/products">Explorar produtos</a>
+    </div>
+  } @else {
+    <ul class="orders">
+      @for (order of orders(); track order.id) {
+        <li class="order">
+          <a class="order__product" [routerLink]="['/product', order.productId]">
+            <span class="order__thumb">
+              @if (order.productHasImage) {
+                <img [src]="imageUrl(order.productId)" [alt]="order.productName" />
+              } @else {
+                <app-icon name="cart" [size]="24" />
+              }
+            </span>
+            <span class="order__info">
+              <strong>{{ order.productName }}</strong>
+              <span>Pedido #{{ order.id }} · {{ dateLabel(order.createdAt) }}</span>
+              <span>Quantidade: {{ order.quantity }}</span>
+            </span>
+          </a>
+          <div class="order__right">
+            <span class="order__status">{{ statusLabel(order.status) }}</span>
+            <strong class="order__total">{{ brl(order.total) }}</strong>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>

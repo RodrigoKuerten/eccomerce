@@ -1,5 +1,6 @@
 package com.ecommerce.rodrigo.user.entity;
 
+import com.ecommerce.rodrigo.user.UserRole;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,6 +27,23 @@ public class User {
 
     @Column(name = "address")
     private String address;
+
+    @Column(name = "cpf", unique = true, length = 14)
+    private String cpf;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRole role = UserRole.BUYER;
+
+    @Column(name = "store_name", length = 150)
+    private String storeName;
+
+    @Column(name = "store_description", length = 2000)
+    private String storeDescription;
+
+    public long getId() {
+        return id;
+    }
 
     public String getEmail() {
         return email;
@@ -65,5 +83,37 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public UserRole getRole() {
+        return role != null ? role : UserRole.BUYER;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getStoreDescription() {
+        return storeDescription;
+    }
+
+    public void setStoreDescription(String storeDescription) {
+        this.storeDescription = storeDescription;
     }
 }

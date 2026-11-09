@@ -1,0 +1,178 @@
+<section class="onboard container">
+  <aside class="onboard__intro">
+    <p class="onboard__eyebrow">Venda na Praça</p>
+    <h1 class="onboard__headline">Sua loja merece uma vitrine do tamanho da cidade.</h1>
+    <p class="onboard__lead">
+      Ative o perfil de vendedor na sua conta atual. Você continua comprando normalmente,
+      com os mesmos favoritos, pedidos e dados.
+    </p>
+
+    <ul class="benefits">
+      <li class="benefit">
+        <span class="benefit__icon"><app-icon name="store" [size]="20" /></span>
+        <div>
+          <strong>Vitrine própria</strong>
+          <p>Publique seus produtos e organize o catálogo em um painel feito para vender.</p>
+        </div>
+      </li>
+      <li class="benefit">
+        <span class="benefit__icon"><app-icon name="shield" [size]="20" /></span>
+        <div>
+          <strong>Venda com segurança</strong>
+          <p>Pedidos e pagamentos acompanhados pela plataforma, do início à entrega.</p>
+        </div>
+      </li>
+      <li class="benefit">
+        <span class="benefit__icon"><app-icon name="truck" [size]="20" /></span>
+        <div>
+          <strong>Logística organizada</strong>
+          <p>Acompanhe estoque e pedidos recentes sem perder o controle da operação.</p>
+        </div>
+      </li>
+      <li class="benefit">
+        <span class="benefit__icon"><app-icon name="star" [size]="20" /></span>
+        <div>
+          <strong>Sem nova conta</strong>
+          <p>É a mesma conta: você só ganha o perfil de vendedor e uma loja.</p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="onboard__proof">
+      <span class="onboard__proof-mark">Praça</span>
+      <span>Leva menos de 5 minutos para ativar sua loja</span>
+    </div>
+  </aside>
+
+  <div class="onboard__card">
+    <header class="onboard__card-head">
+      <p class="onboard__card-eyebrow">Quero vender</p>
+      <h2 class="onboard__card-title">Ative sua loja</h2>
+      <p class="onboard__card-sub">
+        Preencha os dados da sua loja. Sua conta de comprador continua a mesma.
+      </p>
+    </header>
+
+    @if (!auth.ready()) {
+      <div class="onboard__state">
+        <p>Verificando sua conta...</p>
+      </div>
+    } @else if (!auth.isAuthenticated()) {
+      <div class="onboard__state">
+        <app-icon name="user" [size]="26" />
+        <h3>Entre para começar a vender</h3>
+        <p>Use sua conta da Praça. Se ainda não tiver uma, crie agora — você continua comprando normalmente.</p>
+        <a
+          class="btn btn--primary btn--block"
+          routerLink="/login"
+          [queryParams]="{ returnUrl: '/seller/register' }"
+        >
+          Entrar
+        </a>
+        <a
+          class="btn btn--outline btn--block"
+          routerLink="/register"
+          [queryParams]="{ returnUrl: '/seller/register' }"
+        >
+          Criar conta
+        </a>
+      </div>
+    } @else if (auth.isSeller()) {
+      <div class="onboard__state">
+        <app-icon name="store" [size]="26" />
+        <h3>Você já é vendedor</h3>
+        <p>Sua loja já está ativa. Acesse o painel para acompanhar anúncios e pedidos.</p>
+        <a class="btn btn--primary btn--block" routerLink="/seller">Ir para a área de vendas</a>
+      </div>
+    } @else if (loadingProfile()) {
+      <div class="onboard__state">
+        <p>Carregando os dados da sua conta...</p>
+      </div>
+    } @else {
+      @if (profile(); as account) {
+        <div class="onboard__account">
+          <span class="onboard__account-avatar"><app-icon name="user" [size]="20" /></span>
+          <div>
+            <strong>{{ account.fullName }}</strong>
+            <span>{{ account.email }}</span>
+          </div>
+          <span class="onboard__account-tag">Comprador</span>
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <p class="onboard__error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <form [formGroup]="form" (submit)="$event.preventDefault(); submit()" novalidate>
+        <label class="field-label" for="seller-store">Nome da loja</label>
+        <input
+          id="seller-store"
+          class="field"
+          type="text"
+          formControlName="storeName"
+          autocomplete="organization"
+          maxlength="150"
+          placeholder="Ex.: Cantinho da Casa"
+        />
+        @if (form.controls.storeName.touched && form.controls.storeName.invalid) {
+          <p class="field-error">Dê um nome à sua loja.</p>
+        }
+
+        <label class="field-label" for="seller-description">Descrição da loja</label>
+        <textarea
+          id="seller-description"
+          class="field onboard__textarea"
+          formControlName="storeDescription"
+          maxlength="2000"
+          rows="4"
+          placeholder="Conte o que sua loja vende, seu diferencial e como você atende."
+        ></textarea>
+        @if (form.controls.storeDescription.touched && form.controls.storeDescription.invalid) {
+          <p class="field-error">Descreva sua loja em poucas palavras.</p>
+        }
+
+        @if (needsCpf()) {
+          <label class="field-label" for="seller-cpf">CPF</label>
+          <input
+            id="seller-cpf"
+            class="field"
+            type="text"
+            formControlName="cpf"
+            inputmode="numeric"
+            autocomplete="off"
+            maxlength="14"
+            placeholder="000.000.000-00"
+          />
+          @if (form.controls.cpf.touched && form.controls.cpf.invalid) {
+            <p class="field-error">Informe um CPF com 11 dígitos.</p>
+          }
+          <p class="field-hint">Usado para nota fiscal e segurança da conta. Você pode editar depois em Minha conta.</p>
+        } @else {
+          <p class="onboard__cpf-note">
+            <app-icon name="shield" [size]="16" />
+            CPF já cadastrado na sua conta.
+          </p>
+        }
+
+        <p class="onboard__keep-buyer">
+          Sua conta de comprador não muda: você continua comprando, favoritando e acompanhando pedidos.
+        </p>
+
+        <button
+          class="btn btn--primary btn--block onboard__submit"
+          type="submit"
+          [disabled]="submitting()"
+        >
+          {{ submitting() ? 'Ativando sua loja...' : 'Ativar minha loja' }}
+        </button>
+      </form>
+
+      <p class="onboard__switch">
+        <a routerLink="/account">Voltar para minha conta</a>
+        <span>·</span>
+        <a routerLink="/">Quero comprar na Praça</a>
+      </p>
+    }
+  </div>
+</section>
