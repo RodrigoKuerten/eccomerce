@@ -1,0 +1,33 @@
+<section class="error container">
+  <div class="error__content">
+    <p class="error__eyebrow">{{ content.eyebrow }}</p>
+    <h1 class="error__title">{{ content.title }}</h1>
+    <p class="error__text">{{ content.text }}</p>
+
+    <div class="error__actions">
+      <a class="btn btn--primary" routerLink="/">Voltar para a home</a>
+      @if (code === '500') {
+        <a class="btn btn--outline" routerLink="/help">Central de ajuda</a>
+      } @else {
+        <a class="btn btn--outline" routerLink="/products">Explorar produtos</a>
+      }
+    </div>
+
+    @if (code === '404') {
+      <p class="error__links">
+        <span>Você pode estar procurando:</span>
+        <a routerLink="/offers">Ofertas do dia</a>
+        <a routerLink="/orders">Meus pedidos</a>
+        <a routerLink="/help">Central de ajuda</a>
+      </p>
+    }
+  </div>
+
+  <div class="error__panel" aria-hidden="true">
+    <span class="error__code">{{ code }}</span>
+    <span class="error__label">
+      <app-icon [name]="content.icon" [size]="16" />
+      {{ content.label }}
+    </span>
+  </div>
+</section>
