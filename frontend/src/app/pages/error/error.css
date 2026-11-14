@@ -1,0 +1,138 @@
+:host {
+  display: block;
+}
+
+.error {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 40px;
+  align-items: center;
+  min-height: 56vh;
+  padding-block: 56px 64px;
+}
+
+.error__eyebrow {
+  color: var(--accent-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.error__title {
+  margin-top: 8px;
+  max-width: 16ch;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.error__text {
+  margin-top: 14px;
+  max-width: 52ch;
+  color: var(--text-2);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.error__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.error__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  color: var(--text-3);
+  font-size: 0.86rem;
+}
+
+.error__links a {
+  color: var(--text-2);
+  font-weight: 600;
+}
+
+.error__links a:hover {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.error__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 300px;
+  padding: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(120% 120% at 100% 0%, var(--accent-weak), transparent 62%),
+    var(--surface);
+  overflow: hidden;
+  text-align: center;
+}
+
+.error__panel::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  pointer-events: none;
+}
+
+.error__code {
+  font-size: clamp(4.5rem, 10vw, 7rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.error__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-2);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .error {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-block: 40px 48px;
+  }
+
+  .error__panel {
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 560px) {
+  .error {
+    padding-block: 32px 40px;
+  }
+
+  .error__panel {
+    min-height: 180px;
+    padding: 28px;
+  }
+}

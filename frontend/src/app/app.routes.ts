@@ -104,5 +104,16 @@ export const routes: Routes = [
     title: 'Praça',
     loadComponent: () => import('./pages/content/content').then((m) => m.ContentPage),
   },
-  { path: '**', redirectTo: '' },
+  {
+    path: 'error',
+    title: 'Algo deu errado — Praça',
+    data: { code: '500' },
+    loadComponent: () => import('./pages/error/error').then((m) => m.ErrorPage),
+  },
+  {
+    path: '**',
+    title: 'Página não encontrada — Praça',
+    data: { code: '404' },
+    loadComponent: () => import('./pages/error/error').then((m) => m.ErrorPage),
+  },
 ];
